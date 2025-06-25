@@ -1,13 +1,13 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 function Header() {
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <Link to="/" class="navbar-brand">
             Navbar
-          </a>
+          </Link>
           <button
             class="navbar-toggler"
             type="button"
