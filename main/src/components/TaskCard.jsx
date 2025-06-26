@@ -1,6 +1,7 @@
 import React from "react";
 
-function TaskCard({ id, name, description, datePosted }) {
+function TaskCard(props) {
+  const { id, name, description, datePosted } = props;
   const formattedDate =
     datePosted && typeof datePosted.toDate === "function"
       ? datePosted.toDate().toLocaleDateString("en-US") // Format as a readable date string

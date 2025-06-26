@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { Button, Col, Row } from "react-bootstrap";
 
-function AddTask({ fetchNewTasks }) {
+function AddTask(props) {
+  const { fetchNewTasks } = props;
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newDate, setNewDate] = useState("");
