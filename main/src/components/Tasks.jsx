@@ -40,13 +40,17 @@ function Tasks() {
       <h1>Hello</h1>
 
       {taskList.map((task) => (
-        <TaskCard
-          key={task.id}
-          id={task.id}
-          name={task.name}
-          description={task.description}
-          datePosted={task.datePosted}
-        />
+        <Row>
+          <Col>
+            <TaskCard
+              key={task.id}
+              id={task.id}
+              name={task.name}
+              description={task.description}
+              datePosted={task.datePosted}
+            />
+          </Col>
+        </Row>
       ))}
     </div>
   );
