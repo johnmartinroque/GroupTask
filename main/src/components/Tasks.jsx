@@ -45,6 +45,7 @@ function Tasks() {
           id={task.id}
           name={task.name}
           description={task.description}
+          datePosted={task.datePosted}
         />
       ))}
     </div>
