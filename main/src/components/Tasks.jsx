@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+import { Col, Container, Row } from "react-bootstrap";
 
 function Tasks() {
   const [taskList, setTaskList] = useState([]);
@@ -36,23 +37,37 @@ function Tasks() {
     getTaskList();
   }, []);
   return (
-    <div>
-      <h1>Hello</h1>
+    <Container>
+      {" "}
+      {/* Wrap content in a Container for proper Bootstrap layout */}
+      <h1>My Tasks</h1>
+      {/* Place the Row outside the map function to create a single row for all cards */}
+      <Row className="g-4">
+        {" "}
+        {/* Use g-4 for gutter spacing between columns */}
+        {taskList.map((task) => (
+          <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
+            {/*
+              Breakdown of Col sizing:
+              - xs={12}: On extra-small screens, take up 12 columns (full width)
+              - sm={6}: On small screens, take up 6 columns (2 cards per row, since 12/6=2)
+              - md={4}: On medium screens, take up 4 columns (3 cards per row, since 12/4=3)
+              - lg={3}: On large screens and up, take up 3 columns (4 cards per row, since 12/3=4)
 
-      {taskList.map((task) => (
-        <Row>
-          <Col>
+              The 'lg={3}' is the one that achieves "4 TaskCard per row" on larger screens.
+              Bootstrap's grid is 12 columns wide. To get 4 items per row, each item needs to
+              take up 12 / 4 = 3 columns.
+            */}
             <TaskCard
-              key={task.id}
               id={task.id}
               name={task.name}
               description={task.description}
               datePosted={task.datePosted}
             />
           </Col>
-        </Row>
-      ))}
-    </div>
+        ))}
+      </Row>
+    </Container>
   );
 }
 
