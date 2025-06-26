@@ -1,7 +1,13 @@
-import { collection, getDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import TaskCard from "./TaskCard";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 
 function Tasks() {
   const [taskList, setTaskList] = useState([]);
@@ -10,7 +16,13 @@ function Tasks() {
 
   const getTaskList = async () => {
     try {
-      await getDoc(taskListCollectionRef);
+      const data = await getDocs(taskListCollectionRef);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setTaskList(filteredData);
+      console.log(filteredData);
     } catch (err) {
       console.error(err);
     }
@@ -19,9 +31,22 @@ function Tasks() {
   const addTask = async () => {};
 
   const updateTask = async () => {};
+
+  useEffect(() => {
+    getTaskList();
+  }, []);
   return (
     <div>
-      <TaskCard />
+      <h1>Hello</h1>
+
+      {taskList.map((task) => (
+        <TaskCard
+          key={task.id}
+          id={task.id}
+          name={task.name}
+          description={task.description}
+        />
+      ))}
     </div>
   );
 }

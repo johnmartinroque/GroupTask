@@ -5,7 +5,7 @@ function Header() {
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <Link to="/" class="navbar-brand">
+          <Link to="/" as={Link} class="navbar-brand">
             Navbar
           </Link>
           <button
@@ -22,9 +22,15 @@ function Header() {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
+                <Link
+                  to="/"
+                  as={Link}
+                  class="nav-link active"
+                  aria-current="page"
+                  href="#"
+                >
                   Home
-                </a>
+                </Link>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
