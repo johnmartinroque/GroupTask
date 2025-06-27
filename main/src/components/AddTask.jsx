@@ -8,20 +8,28 @@ function AddTask(props) {
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newDate, setNewDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const taskListCollectionRef = collection(db, "tasks");
   const addTask = async () => {
-    const currentDate = new Date().toISOString().slice(0, 10);
-    await addDoc(taskListCollectionRef, {
-      name: newName,
-      description: newDescription,
-      datePosted: currentDate,
-    });
+    try {
+      setIsLoading(true);
+      const currentDate = new Date().toISOString().slice(0, 10);
+      await addDoc(taskListCollectionRef, {
+        name: newName,
+        description: newDescription,
+        datePosted: currentDate,
+      });
 
-    setNewName("");
-    setNewDescription("");
-    setNewDate("");
-    if (fetchNewTasks) {
-      fetchNewTasks();
+      setNewName("");
+      setNewDescription("");
+      setNewDate("");
+      if (fetchNewTasks) {
+        fetchNewTasks();
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
     }
   };
 
@@ -30,6 +38,13 @@ function AddTask(props) {
     <div>
       <Row>
         <Col>
+          {isLoading ? (
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            <></>
+          )}
           <Button onClick={addTask}>SUBMIT</Button>
           <input
             type="text"
