@@ -13,11 +13,13 @@ import AddTask from "./AddTask";
 
 function Tasks() {
   const [taskList, setTaskList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const taskListCollectionRef = collection(db, "tasks");
 
   const getTaskList = async () => {
     try {
+      setIsLoading(true);
       const data = await getDocs(taskListCollectionRef);
       const filteredData = data.docs.map((doc) => ({
         ...doc.data(),
@@ -27,6 +29,8 @@ function Tasks() {
       console.log(filteredData);
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -38,40 +42,36 @@ function Tasks() {
   return (
     <>
       <Container>
-        {" "}
-        {/* Wrap content in a Container for proper Bootstrap layout */}
         <h1>My Tasks</h1>
-        {/* Place the Row outside the map function to create a single row for all cards */}
-        <Row className="g-4">
-          {" "}
-          {/* Use g-4 for gutter spacing between columns */}
-          {taskList.map((task) => (
-            <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
-              {/*
-              Breakdown of Col sizing:
-              - xs={12}: On extra-small screens, take up 12 columns (full width)
-              - sm={6}: On small screens, take up 6 columns (2 cards per row, since 12/6=2)
-              - md={4}: On medium screens, take up 4 columns (3 cards per row, since 12/4=3)
-              - lg={3}: On large screens and up, take up 3 columns (4 cards per row, since 12/3=4)
-
-              The 'lg={3}' is the one that achieves "4 TaskCard per row" on larger screens.
-              Bootstrap's grid is 12 columns wide. To get 4 items per row, each item needs to
-              take up 12 / 4 = 3 columns.
-            */}
-              <TaskCard
-                id={task.id}
-                name={task.name}
-                description={task.description}
-                datePosted={task.datePosted}
-              />
-            </Col>
-          ))}
-        </Row>
-        <Row>
-          <Col>
-            <AddTask fetchNewTasks={getTaskList} />
-          </Col>
-        </Row>
+        {isLoading ? ( // Conditionally render the spinner or the tasks
+          <div className="d-flex justify-content-center my-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <Row className="g-4">
+              {taskList.map((task) => (
+                <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
+                  <TaskCard
+                    id={task.id}
+                    name={task.name}
+                    description={task.description}
+                    datePosted={task.datePosted}
+                  />
+                </Col>
+              ))}
+            </Row>
+            <Row className="my-4">
+              {" "}
+              {/* Added margin for spacing */}
+              <Col>
+                <AddTask fetchNewTasks={getTaskList} />
+              </Col>
+            </Row>
+          </>
+        )}
       </Container>
     </>
   );
