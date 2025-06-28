@@ -6,6 +6,7 @@ import Home from "./screens/Home";
 import Login from "./screens/Login";
 import Tasks from "./components/Tasks";
 import TaskDetailed from "./components/TaskDetailed";
+import SignIn from "./screens/SignIn";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/task" element={<TaskDetailed />} />
+          <Route path="/signup" element={<SignIn />} />
         </Routes>
       </Router>
     </div>
