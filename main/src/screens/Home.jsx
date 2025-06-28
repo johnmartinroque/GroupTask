@@ -3,10 +3,12 @@ import TaskCard from "../components/TaskCard";
 import Tasks from "../components/Tasks";
 
 import { Button } from "react-bootstrap";
+import Groups from "../components/Groups";
 
 function Home() {
   return (
     <div>
+      <Groups />
       <Tasks />
     </div>
   );
