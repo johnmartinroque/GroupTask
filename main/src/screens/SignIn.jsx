@@ -2,6 +2,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { auth, googleProvider } from "../firebase";
+import Register from "../components/Register";
 
 function SignIn() {
   const register = async () => {
@@ -22,6 +23,11 @@ function SignIn() {
 
   return (
     <div>
+      <Row>
+        <Col>
+          <Register />
+        </Col>
+      </Row>
       <Row>
         <Col>
           <button onClick={register}>Register</button>
