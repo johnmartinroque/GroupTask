@@ -3,10 +3,10 @@ import "./App.css";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./screens/Home";
-import Login from "./screens/Login";
+
 import Tasks from "./components/Tasks";
 import TaskDetailed from "./components/TaskDetailed";
-import SignIn from "./screens/SignIn";
+import LoginPage from "./screens/LoginPage";
 
 function App() {
   return (
@@ -15,9 +15,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/task" element={<TaskDetailed />} />
-          <Route path="/signup" element={<SignIn />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </div>
