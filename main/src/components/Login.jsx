@@ -1,12 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { auth, googleProvider } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const googleLogin = async () => {
     try {
-      const user = await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      console.log("Google login user email:", user.email);
+      localStorage.setItem("userEmail", user.email);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const userLogin = async () => {
+    try {
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const user = result.user;
+      console.log("Logged in user email: ", user.email);
+      localStorage.setItem("userEmail", user.email);
+      console.log(user.email);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const logoutUser = async () => {
+    try {
+      signOut(auth);
+      localStorage.removeItem("userEmail");
     } catch (err) {
       console.error(err);
     }
@@ -23,23 +54,27 @@ function Login() {
                 Email address
               </label>
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 className="form-control"
-                id="email"
                 placeholder="name@example.com"
               />
             </div>
             <div className="mb-3">
               <label htmlFor="textarea" className="form-label">
-                Example textarea
+                Password
               </label>
-              <textarea
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="form-control"
-                id="textarea"
                 placeholder="Your message..."
+                password
               />
             </div>
-            <Button>Log in</Button>
+            <Button onClick={userLogin}>Log in</Button>
+            <Button onClick={logoutUser}>Logout</Button>
           </Col>
         </Row>
         <Button onClick={googleLogin}>Login with Google</Button>
