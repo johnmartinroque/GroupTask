@@ -18,6 +18,7 @@ function Register() {
       const user = result.user;
       setEmail("");
       setPassword("");
+      setErrorMessage("Registered");
     } catch (err) {
       console.error(err);
       if (err.message == "Firebase: Error (auth/email-already-in-use).") {
