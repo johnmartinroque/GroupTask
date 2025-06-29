@@ -1,16 +1,81 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { Button, Card, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Container, Button } from "react-bootstrap";
 
 function TaskDetailed() {
-  const {} = useParams();
+  const { taskId } = useParams();
   const [task, setTask] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState("");
 
-  return <div>TaskDetailed</div>;
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const taskDoc = await getDoc(doc(db, "tasks", taskId));
+        if (taskDoc.exists()) {
+          setTask({ id: taskDoc.id, ...taskDoc.data() });
+        } else {
+          console.log("No such task!");
+        }
+      } catch (error) {
+        console.error("Error fetching task:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTask();
+  }, [taskId]);
+
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center my-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!task) {
+    return (
+      <Container>
+        <h2>Task not found.</h2>
+      </Container>
+    );
+  }
+
+  const formattedDate =
+    task.datePosted && typeof task.datePosted.toDate === "function"
+      ? task.datePosted.toDate().toLocaleDateString("en-US")
+      : "N/A";
+
+  return (
+    <Container className="my-4">
+      <Card>
+        <Card.Body>
+          <Card.Title>{task.name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            Posted on: {formattedDate}
+          </Card.Subtitle>
+          <Card.Text>{task.description}</Card.Text>
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Open this select menu</option>
+            <option value={status} onChange={(e) => setStatus(e.target.value)}>
+              One
+            </option>
+            <option value={status}>Two</option>
+            <option value={status}>Three</option>
+          </select>
+          <Link to="/">
+            <Button variant="primary">Back to Tasks</Button>
+          </Link>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
 }
 
 export default TaskDetailed;

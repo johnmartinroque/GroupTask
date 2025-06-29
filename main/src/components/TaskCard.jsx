@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function TaskCard(props) {
   const { id, name, description, datePosted } = props;
@@ -13,9 +14,10 @@ function TaskCard(props) {
           <h5 class="card-title">{name}</h5>
           <p>{formattedDate}</p>
           <p class="card-text">{description}</p>
-          <a href="#" class="card-link">
-            Card link
-          </a>
+
+          <Link to={`/tasks/${id}`} className="card-link">
+            View Details
+          </Link>
           <a href="#" class="card-link">
             Another link
           </a>
