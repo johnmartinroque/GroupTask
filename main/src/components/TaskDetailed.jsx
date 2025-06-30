@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Card, Container, Button } from "react-bootstrap";
 
 function TaskDetailed() {
@@ -46,6 +46,14 @@ function TaskDetailed() {
       </Container>
     );
   }
+  const updateTask = async () => {
+    try {
+      const taskRef = doc(db, "tasks", taskId);
+      await updateDoc(taskRef, { status: status });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const formattedDate =
     task.datePosted && typeof task.datePosted.toDate === "function"
@@ -61,14 +69,22 @@ function TaskDetailed() {
             Posted on: {formattedDate}
           </Card.Subtitle>
           <Card.Text>{task.description}</Card.Text>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Open this select menu</option>
-            <option value={status} onChange={(e) => setStatus(e.target.value)}>
-              One
-            </option>
-            <option value={status}>Two</option>
-            <option value={status}>Three</option>
+          <select
+            className="form-select"
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              updateTask(e.target.value);
+            }}
+          >
+            <option value="">Open this select menu</option>
+            <option value="One">One</option>
+            <option value="Two">Two</option>
+            <option value="Three">Three</option>
           </select>
+          <Button variant="success" className="me-2" onClick={updateTask}>
+            Update Status
+          </Button>
           <Link to="/">
             <Button variant="primary">Back to Tasks</Button>
           </Link>
