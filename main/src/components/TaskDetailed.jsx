@@ -78,9 +78,9 @@ function TaskDetailed() {
             }}
           >
             <option value="">Open this select menu</option>
-            <option value="One">One</option>
-            <option value="Two">Two</option>
-            <option value="Three">Three</option>
+            <option value="No progress">No progress</option>
+            <option value="In progress">In progress</option>
+            <option value="Finished">Finished</option>
           </select>
           <Button variant="success" className="me-2" onClick={updateTask}>
             Update Status
