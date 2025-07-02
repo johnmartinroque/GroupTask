@@ -8,24 +8,24 @@ function TaskDetailed() {
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [status, setStatus] = useState("");
+  const [progress, setProgress] = useState("");
+
+  const fetchTask = async () => {
+    try {
+      const taskDoc = await getDoc(doc(db, "tasks", taskId));
+      if (taskDoc.exists()) {
+        setTask({ id: taskDoc.id, ...taskDoc.data() });
+      } else {
+        console.log("No such task!");
+      }
+    } catch (error) {
+      console.error("Error fetching task:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchTask = async () => {
-      try {
-        const taskDoc = await getDoc(doc(db, "tasks", taskId));
-        if (taskDoc.exists()) {
-          setTask({ id: taskDoc.id, ...taskDoc.data() });
-        } else {
-          console.log("No such task!");
-        }
-      } catch (error) {
-        console.error("Error fetching task:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchTask();
   }, [taskId]);
 
@@ -49,7 +49,8 @@ function TaskDetailed() {
   const updateTask = async () => {
     try {
       const taskRef = doc(db, "tasks", taskId);
-      await updateDoc(taskRef, { status: status });
+      await updateDoc(taskRef, { progress: progress });
+      fetchTask();
     } catch (err) {
       console.error(err);
     }
@@ -69,12 +70,12 @@ function TaskDetailed() {
             Posted on: {formattedDate}
           </Card.Subtitle>
           <Card.Text>{task.description}</Card.Text>
+          <Card.Text>{task.progress}</Card.Text>
           <select
             className="form-select"
-            value={status}
+            value={progress}
             onChange={(e) => {
-              setStatus(e.target.value);
-              updateTask(e.target.value);
+              setProgress(e.target.value);
             }}
           >
             <option value="">Open this select menu</option>
