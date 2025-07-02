@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function TaskCard(props) {
-  const { id, name, description, datePosted } = props;
+  const { id, name, description, datePosted, progress } = props;
   const formattedDate =
     datePosted && typeof datePosted.toDate === "function"
       ? datePosted.toDate().toLocaleDateString("en-US") // Format as a readable date string
@@ -14,6 +14,7 @@ function TaskCard(props) {
           <h5 class="card-title">{name}</h5>
           <p>{formattedDate}</p>
           <p class="card-text">{description}</p>
+          <p>Progress: {progress} </p>
 
           <Link to={`/tasks/${id}`} className="card-link">
             View Details

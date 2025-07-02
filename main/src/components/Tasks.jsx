@@ -59,6 +59,7 @@ function Tasks() {
                     name={task.name}
                     description={task.description}
                     datePosted={task.datePosted}
+                    progress={task.progress}
                   />
                 </Col>
               ))}

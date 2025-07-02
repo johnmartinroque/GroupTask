@@ -8,6 +8,7 @@ function AddTask(props) {
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newDate, setNewDate] = useState("");
+  const [progress, setProgress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const taskListCollectionRef = collection(db, "tasks");
   const addTask = async () => {
@@ -18,6 +19,7 @@ function AddTask(props) {
         name: newName,
         description: newDescription,
         datePosted: currentDate,
+        progress: "No progress",
       });
 
       setNewName("");
