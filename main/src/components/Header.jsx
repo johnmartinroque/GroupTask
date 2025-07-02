@@ -1,6 +1,7 @@
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router-dom";
 function Header() {
+  const user = localStorage.getItem("userEmail");
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -55,6 +56,7 @@ function Header() {
                 Search
               </button>
             </form>
+            <li>{user}</li>
           </div>
         </div>
       </nav>
