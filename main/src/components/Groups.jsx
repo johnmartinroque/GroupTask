@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 import { db } from "../firebase";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -11,23 +20,49 @@ function Groups() {
   const [groupList, setGroupList] = useState([]);
 
   const groupCollectionRef = collection(db, "groups");
+  const navigate = useNavigate();
 
   const createGroup = async () => {
     await addDoc(groupCollectionRef, { groupName: newGroupName });
     getGroupList();
+    setNewGroupName("");
   };
 
   const getGroupList = async () => {
     const data = await getDocs(groupCollectionRef);
-    const filteredData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const filteredData = data.docs
+      .map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+      .filter((doc) => typeof doc.groupName === "string"); // 👈 filter out bad docs
     setGroupList(filteredData);
   };
 
-  const joinGroupHandler = () => {
-    console.log(groupName);
+  const joinGroupHandler = async () => {
+    const trimmedInput = groupName.trim().toLowerCase();
+    const userId = "user123"; // Replace with actual user ID (e.g. from Firebase Auth)
+
+    const group = groupList.find((g) => {
+      return g.groupName?.toLowerCase() === trimmedInput;
+    });
+
+    if (!group) {
+      alert("Group not found!");
+      return;
+    }
+
+    const groupRef = doc(db, "groups", group.id);
+
+    try {
+      await updateDoc(groupRef, {
+        members: arrayUnion(userId),
+      });
+      console.log("Joined group and added to members!");
+      navigate(`/groups/${group.id}`);
+    } catch (err) {
+      console.error("Error joining group:", err);
+    }
   };
 
   useEffect(() => {
