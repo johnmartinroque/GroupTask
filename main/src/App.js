@@ -7,6 +7,7 @@ import Home from "./screens/Home";
 import Tasks from "./components/Tasks";
 import TaskDetailed from "./components/TaskDetailed";
 import LoginPage from "./screens/LoginPage";
+import GroupDetailed from "./components/GroupDetailed";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/task" element={<TaskDetailed />} />
           <Route path="/tasks/:taskId" element={<TaskDetailed />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/group/:groupId" element={<GroupDetailed />} />
         </Routes>
       </Router>
     </div>

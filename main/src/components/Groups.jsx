@@ -45,12 +45,15 @@ function Groups() {
   const joinGroupHandler = async () => {
     const trimmedInput = groupName.trim().toLowerCase();
     const auth = getAuth();
-    const userId = auth.currentUser?.uid;
+    const user = auth.currentUser;
 
-    if (!userId) {
+    if (!user) {
       alert("You must be logged in to join a group.");
       return;
     }
+
+    const userId = user.uid;
+    const displayName = user.displayName || "Anonymous";
 
     const group = groupList.find((g) => {
       return g.groupName?.toLowerCase() === trimmedInput;
@@ -65,10 +68,13 @@ function Groups() {
 
     try {
       await updateDoc(groupRef, {
-        members: arrayUnion(userId),
+        members: arrayUnion({
+          id: userId,
+          name: displayName,
+        }),
       });
       console.log("Joined group and added to members!");
-      navigate(`/groups/${group.id}`);
+      navigate(`/group/${group.id}`);
     } catch (err) {
       console.error("Error joining group:", err);
     }
@@ -84,7 +90,10 @@ function Groups() {
         <Row>
           <Col>Groups</Col>
           {groupList.map((group) => (
-            <Col key={group.id}>{group.groupName}</Col>
+            <>
+              <p key={group.id}>{group.groupName}</p>
+              <Link to={`/group/${group.id}`}>View Group</Link>
+            </>
           ))}
         </Row>
         <Row>
