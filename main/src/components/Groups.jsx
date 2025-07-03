@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 function Groups() {
   const [newGroupName, setNewGroupName] = useState("");
@@ -21,6 +22,8 @@ function Groups() {
 
   const groupCollectionRef = collection(db, "groups");
   const navigate = useNavigate();
+  const auth = getAuth();
+  const userId = auth.currentUser?.uid;
 
   const createGroup = async () => {
     await addDoc(groupCollectionRef, { groupName: newGroupName });
@@ -41,7 +44,13 @@ function Groups() {
 
   const joinGroupHandler = async () => {
     const trimmedInput = groupName.trim().toLowerCase();
-    const userId = "user123"; // Replace with actual user ID (e.g. from Firebase Auth)
+    const auth = getAuth();
+    const userId = auth.currentUser?.uid;
+
+    if (!userId) {
+      alert("You must be logged in to join a group.");
+      return;
+    }
 
     const group = groupList.find((g) => {
       return g.groupName?.toLowerCase() === trimmedInput;
