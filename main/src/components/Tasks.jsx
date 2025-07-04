@@ -8,7 +8,8 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Row } from "react-bootstrap";
+import { onAuthStateChanged } from "firebase/auth";
 import AddTask from "./AddTask";
 
 function Tasks() {
@@ -33,8 +34,6 @@ function Tasks() {
       setIsLoading(false);
     }
   };
-
-  const updateTask = async () => {};
 
   useEffect(() => {
     getTaskList();
