@@ -1,4 +1,5 @@
 import React from "react";
+import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function TaskCard(props) {
@@ -24,6 +25,7 @@ function TaskCard(props) {
           </a>
         </div>
       </div>
+      <Col></Col>
     </div>
   );
 }

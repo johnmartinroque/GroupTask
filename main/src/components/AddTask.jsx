@@ -5,7 +5,7 @@ import { Alert, Button, Col, Row } from "react-bootstrap";
 import { onAuthStateChanged } from "firebase/auth";
 
 function AddTask(props) {
-  const { fetchNewTasks } = props;
+  const { fetchNewTasks, groupId, groupName } = props;
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newDate, setNewDate] = useState("");
@@ -32,6 +32,9 @@ function AddTask(props) {
         description: newDescription.trim(),
         datePosted: currentDate,
         progress: "No progress",
+        createdBy: user.email,
+        groupId: groupId,
+        groupName: groupName,
       });
 
       setNewName("");

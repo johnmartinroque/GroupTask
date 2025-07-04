@@ -7,7 +7,7 @@ import Home from "./screens/Home";
 import Tasks from "./components/Tasks";
 import TaskDetailed from "./components/TaskDetailed";
 import LoginPage from "./screens/LoginPage";
-import GroupDetailed from "./components/GroupDetailed";
+import GroupDetailed from "./screens/GroupDetailed";
 
 function App() {
   return (
