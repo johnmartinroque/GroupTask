@@ -79,7 +79,6 @@ function Login() {
               />
             </div>
             <Button onClick={userLogin}>Log in</Button>
-            <Button onClick={logoutUser}>Logout</Button>
           </Col>
         </Row>
         <Button onClick={googleLogin}>Login with Google</Button>

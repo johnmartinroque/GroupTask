@@ -39,7 +39,7 @@ function Tasks() {
           name: doc.data().groupName,
         }));
 
-      // Step 2: For each group, get its tasks
+      // Step 2: For each group, get its tasks (excluding finished)
       const tasksRef = collection(db, "tasks");
       const groupedTasks = {};
 
@@ -47,10 +47,12 @@ function Tasks() {
         const q = query(tasksRef, where("groupId", "==", group.id));
         const taskSnap = await getDocs(q);
 
-        groupedTasks[group.name] = taskSnap.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+        groupedTasks[group.name] = taskSnap.docs
+          .map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }))
+          .filter((task) => task.progress !== "Finished"); // ❌ Exclude "Finished"
       }
 
       setTasksByGroup(groupedTasks);
@@ -103,12 +105,6 @@ function Tasks() {
               </Row>
             </div>
           ))}
-
-          <Row className="my-4">
-            <Col>
-              <AddTask fetchNewTasks={handleNewTaskAdded} />
-            </Col>
-          </Row>
         </>
       ) : (
         <Alert variant="warning">Please log in to view your tasks.</Alert>

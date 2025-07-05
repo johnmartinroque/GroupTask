@@ -8,7 +8,6 @@ import Groups from "../components/Groups";
 function Home() {
   return (
     <div>
-      <Groups />
       <Tasks />
     </div>
   );
