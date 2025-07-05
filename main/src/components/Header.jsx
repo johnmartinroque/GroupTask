@@ -75,9 +75,9 @@ function Header() {
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" href="#">
-                      Action
-                    </a>
+                    <Link class="dropdown-item" to={"/profile"}>
+                      Profile
+                    </Link>
                   </li>
                   <li>
                     <a class="dropdown-item" href="#">
