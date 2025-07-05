@@ -1,54 +1,65 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import AddTask from "../components/AddTask";
 import { Col, Row } from "react-bootstrap";
 import GroupTasks from "../components/GroupTasks";
+import { getAuth } from "firebase/auth";
 
 function GroupDetailed() {
   const { groupId } = useParams();
   const [group, setGroup] = useState(null);
-  const [memberNames, setMemberNames] = useState([]);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const auth = getAuth();
+  const user = auth.currentUser;
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const groupRef = doc(db, "groups", groupId);
-      const groupSnap = await getDoc(groupRef);
-
-      if (groupSnap.exists()) {
-        const groupData = groupSnap.data();
-        setGroup({ id: groupSnap.id, ...groupData });
-
-        // Fetch member names from users collection
-        if (groupData.members && Array.isArray(groupData.members)) {
-          const memberNamePromises = groupData.members.map(async (userId) => {
-            try {
-              const userRef = doc(db, "users", userId);
-              const userSnap = await getDoc(userRef);
-              if (userSnap.exists()) {
-                const userData = userSnap.data();
-                return userData.name || userId;
-              }
-              return userId; // fallback
-            } catch (err) {
-              console.error("Error fetching user:", err);
-              return userId;
-            }
-          });
-
-          const names = await Promise.all(memberNamePromises);
-          setMemberNames(names);
-        }
-      } else {
-        console.log("Group not found");
+      if (!user) {
+        setIsLoading(false);
+        return;
       }
+
+      try {
+        const groupRef = doc(db, "groups", groupId);
+        const groupSnap = await getDoc(groupRef);
+
+        if (groupSnap.exists()) {
+          const groupData = groupSnap.data();
+          const memberList = groupData.members || [];
+
+          // Check if user is a member
+          const isMember = memberList.some((member) => member.id === user.uid);
+
+          if (isMember) {
+            setIsAuthorized(true);
+            setGroup({ id: groupSnap.id, ...groupData });
+          } else {
+            setIsAuthorized(false);
+          }
+        } else {
+          console.log("Group not found");
+          navigate("/groups");
+        }
+      } catch (err) {
+        console.error("Error fetching group:", err);
+      }
+
+      setIsLoading(false);
     };
 
     fetchGroup();
-  }, [groupId]);
+  }, [groupId, user, navigate]);
 
-  if (!group) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
+  if (!user) return <p>Please log in to view this group.</p>;
+  if (!isAuthorized)
+    return <p>Access denied. You are not a member of this group.</p>;
+  if (!group) return <p>Group not found.</p>;
 
   return (
     <div>
@@ -56,15 +67,18 @@ function GroupDetailed() {
       <h4>Members:</h4>
       <ul>
         {group.members?.map((member, index) => (
-          <li key={index}>{member.name}</li> // ✅ access the name property
+          <li key={index}>
+            {member.name} ({member.role})
+          </li>
         ))}
       </ul>
+
       <Row>
         <Col>
           <AddTask groupId={group.id} groupName={group.groupName} />
         </Col>
       </Row>
-      <GroupTasks />
+      <GroupTasks groupId={group.id} />
     </div>
   );
 }

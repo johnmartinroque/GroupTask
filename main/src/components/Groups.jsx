@@ -26,7 +26,24 @@ function Groups() {
   const userId = auth.currentUser?.uid;
 
   const createGroup = async () => {
-    await addDoc(groupCollectionRef, { groupName: newGroupName });
+    const user = auth.currentUser;
+    if (!user) {
+      alert("You must be logged in to create a group.");
+      return;
+    }
+
+    const newGroup = {
+      groupName: newGroupName,
+      members: [
+        {
+          id: user.uid,
+          name: user.displayName || "Anonymous",
+          role: "admin", // ✅ mark creator as admin
+        },
+      ],
+    };
+
+    await addDoc(groupCollectionRef, newGroup);
     getGroupList();
     setNewGroupName("");
   };
@@ -44,7 +61,6 @@ function Groups() {
 
   const joinGroupHandler = async () => {
     const trimmedInput = groupName.trim().toLowerCase();
-    const auth = getAuth();
     const user = auth.currentUser;
 
     if (!user) {
@@ -71,6 +87,7 @@ function Groups() {
         members: arrayUnion({
           id: userId,
           name: displayName,
+          role: "member", // ✅ mark as member
         }),
       });
       console.log("Joined group and added to members!");
