@@ -7,16 +7,19 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate("");
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       console.log("Google login user email:", user.email);
       localStorage.setItem("userEmail", user.email);
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -29,6 +32,7 @@ function Login() {
       console.log("Logged in user email: ", user.email);
       localStorage.setItem("userEmail", user.email);
       console.log(user.email);
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -38,6 +42,7 @@ function Login() {
     try {
       signOut(auth);
       localStorage.removeItem("userEmail");
+      navigate("/");
     } catch (err) {
       console.error(err);
     }

@@ -1,7 +1,31 @@
-import React, { use } from "react";
-import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import React, { use, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+
 function Header() {
+  const [userEmail, setUserEmail] = useState("");
   const user = localStorage.getItem("userEmail");
+  const navigate = useNavigate("");
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.removeItem("userEmail");
+      setUserEmail(null);
+      navigate("/");
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userEmail");
+    if (storedUser) {
+      setUserEmail(storedUser);
+    }
+  }, []);
+
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -39,10 +63,34 @@ function Header() {
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">
-                  Disabled
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  {user}
                 </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      Action
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      Another action
+                    </a>
+                  </li>
+
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </li>
             </ul>
             <form class="d-flex" role="search">
@@ -56,7 +104,6 @@ function Header() {
                 Search
               </button>
             </form>
-            <li>{user}</li>
           </div>
         </div>
       </nav>

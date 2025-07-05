@@ -1,79 +1,119 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import TaskCard from "./TaskCard";
-import {
-  getDocs,
-  collection,
-  addDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
-import { Alert, Button, Col, Container, Row } from "react-bootstrap";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import AddTask from "./AddTask";
 
 function Tasks() {
-  const [taskList, setTaskList] = useState([]);
+  const [tasksByGroup, setTasksByGroup] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
 
-  const taskListCollectionRef = collection(db, "tasks");
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUserId(user.uid);
+        await fetchTasks(user.uid);
+      } else {
+        setUserId(null);
+        setTasksByGroup({});
+        setIsLoading(false);
+      }
+    });
 
-  const getTaskList = async () => {
+    return () => unsubscribe();
+  }, []);
+
+  const fetchTasks = async (uid) => {
     try {
       setIsLoading(true);
-      const data = await getDocs(taskListCollectionRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setTaskList(filteredData);
-      console.log(filteredData);
+
+      // Step 1: Get all groups user is a member of
+      const groupsSnapshot = await getDocs(collection(db, "groups"));
+      const userGroups = groupsSnapshot.docs
+        .filter((doc) => (doc.data().members || []).some((m) => m.id === uid))
+        .map((doc) => ({
+          id: doc.id,
+          name: doc.data().groupName,
+        }));
+
+      // Step 2: For each group, get its tasks
+      const tasksRef = collection(db, "tasks");
+      const groupedTasks = {};
+
+      for (const group of userGroups) {
+        const q = query(tasksRef, where("groupId", "==", group.id));
+        const taskSnap = await getDocs(q);
+
+        groupedTasks[group.name] = taskSnap.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+      }
+
+      setTasksByGroup(groupedTasks);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch tasks:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    getTaskList();
-  }, []);
+  const handleNewTaskAdded = () => {
+    if (userId) {
+      fetchTasks(userId);
+    }
+  };
+
   return (
-    <>
-      <Container>
-        <h1>My Tasks</h1>
-        {isLoading ? ( // Conditionally render the spinner or the tasks
-          <div className="d-flex justify-content-center my-5">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+    <Container>
+      <h1>My Group Tasks</h1>
+
+      {isLoading ? (
+        <div className="d-flex justify-content-center my-5">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
-        ) : (
-          <>
-            <Row className="g-4">
-              {taskList.map((task) => (
-                <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
-                  <TaskCard
-                    id={task.id}
-                    name={task.name}
-                    description={task.description}
-                    datePosted={task.datePosted}
-                    progress={task.progress}
-                  />
-                </Col>
-              ))}
-            </Row>
-            <Row className="my-4">
-              {" "}
-              {/* Added margin for spacing */}
-              <Col>
-                <AddTask fetchNewTasks={getTaskList} />
-              </Col>
-            </Row>
-          </>
-        )}
-      </Container>
-    </>
+        </div>
+      ) : userId ? (
+        <>
+          {Object.entries(tasksByGroup).map(([groupName, tasks]) => (
+            <div key={groupName}>
+              <h4 className="mt-4 mb-3">{groupName}</h4>
+              <Row className="g-4">
+                {tasks.length > 0 ? (
+                  tasks.map((task) => (
+                    <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
+                      <TaskCard
+                        id={task.id}
+                        name={task.name}
+                        description={task.description}
+                        datePosted={task.datePosted}
+                        progress={task.progress}
+                      />
+                    </Col>
+                  ))
+                ) : (
+                  <Col>
+                    <p>No tasks in this group yet.</p>
+                  </Col>
+                )}
+              </Row>
+            </div>
+          ))}
+
+          <Row className="my-4">
+            <Col>
+              <AddTask fetchNewTasks={handleNewTaskAdded} />
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <Alert variant="warning">Please log in to view your tasks.</Alert>
+      )}
+    </Container>
   );
 }
 
