@@ -2,9 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
-import AddTask from "../components/AddTask";
+import AddTask from "../components/task/AddTask";
 import { Col, Row } from "react-bootstrap";
-import GroupTasks from "../components/GroupTasks";
+import GroupTasks from "../components/task/GroupTasks";
 import { getAuth } from "firebase/auth";
 
 function GroupDetailed() {

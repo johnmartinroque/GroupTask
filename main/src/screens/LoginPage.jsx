@@ -1,9 +1,5 @@
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import React from "react";
-import { Col, Row } from "react-bootstrap";
-import { auth, googleProvider } from "../firebase";
-import Register from "../components/Register";
-import Login from "../components/Login";
+import Register from "../components/authentication/Register";
+import Login from "../components/authentication/Login";
 
 function LoginPage() {
   return (

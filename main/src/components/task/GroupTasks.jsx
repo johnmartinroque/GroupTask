@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { Card, Spinner, Row, Col } from "react-bootstrap";
 

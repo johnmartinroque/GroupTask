@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { auth, googleProvider } from "../firebase";
+import { auth, googleProvider } from "../../firebase";
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,

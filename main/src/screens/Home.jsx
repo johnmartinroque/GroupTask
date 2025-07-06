@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import TaskCard from "../components/TaskCard";
-import Tasks from "../components/Tasks";
 
 import { Button } from "react-bootstrap";
-import Groups from "../components/Groups";
+import Tasks from "../components/task/Tasks";
 
 function Home() {
   return (

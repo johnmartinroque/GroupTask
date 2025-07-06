@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { db } from "../firebase";
+
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Card, Container, Button } from "react-bootstrap";
+import { db } from "../firebase";
 
 function TaskDetailed() {
   const { taskId } = useParams();
@@ -14,7 +15,9 @@ function TaskDetailed() {
     try {
       const taskDoc = await getDoc(doc(db, "tasks", taskId));
       if (taskDoc.exists()) {
-        setTask({ id: taskDoc.id, ...taskDoc.data() });
+        const data = { id: taskDoc.id, ...taskDoc.data() };
+        setTask(data);
+        setProgress(data.progress || ""); // pre-fill the select input
       } else {
         console.log("No such task!");
       }
@@ -86,11 +89,11 @@ function TaskDetailed() {
           <Button variant="success" className="me-2" onClick={updateTask}>
             Update Status
           </Button>
-          <Link to="/">
-            <Button variant="primary">Back to Tasks</Button>
-          </Link>
         </Card.Body>
       </Card>
+      <Link to="/">
+        <Button variant="primary">Back to Tasks</Button>
+      </Link>
     </Container>
   );
 }

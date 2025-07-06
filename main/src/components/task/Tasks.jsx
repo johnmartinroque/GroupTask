@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { db, auth } from "../firebase";
+import { db, auth } from "../../firebase";
 import TaskCard from "./TaskCard";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Alert, Button, Col, Container, Row } from "react-bootstrap";
-import AddTask from "./AddTask";
 
 function Tasks() {
   const [tasksByGroup, setTasksByGroup] = useState({});

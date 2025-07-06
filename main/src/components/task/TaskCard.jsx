@@ -12,7 +12,9 @@ function TaskCard(props) {
     <div>
       <div class="card" style={{ width: "18rem" }}>
         <div class="card-body">
-          <h5 class="card-title">{name}</h5>
+          <Link to={`/tasks/${id}`} class="card-title">
+            {name}
+          </Link>
           <p>{formattedDate}</p>
           <p class="card-text">{description}</p>
           <p>Progress: {progress} </p>
@@ -20,12 +22,8 @@ function TaskCard(props) {
           <Link to={`/tasks/${id}`} className="card-link">
             View Details
           </Link>
-          <a href="#" class="card-link">
-            Another link
-          </a>
         </div>
       </div>
-      <Col></Col>
     </div>
   );
 }
