@@ -9,7 +9,6 @@ function Home() {
   return (
     <div>
       <Tasks />
-      <Groups />
       <MyGroups />
     </div>
   );
