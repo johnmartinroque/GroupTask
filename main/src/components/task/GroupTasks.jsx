@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, Spinner, Row, Col } from "react-bootstrap";
 
 function GroupTasks() {
@@ -41,7 +41,9 @@ function GroupTasks() {
             <Col key={task.id} md={6} lg={4}>
               <Card className="mb-3">
                 <Card.Body>
-                  <Card.Title>{task.name}</Card.Title>
+                  <Card.Title>
+                    <Link to={`/tasks/${task.id}`}>{task.name}</Link>
+                  </Card.Title>
                   <Card.Text>
                     <strong>Description:</strong> {task.description}
                     <br />

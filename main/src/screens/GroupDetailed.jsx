@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
 import AddTask from "../components/task/AddTask";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import GroupTasks from "../components/task/GroupTasks";
 import { getAuth } from "firebase/auth";
 
@@ -11,6 +11,7 @@ function GroupDetailed() {
   const { groupId } = useParams();
   const [group, setGroup] = useState(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -32,15 +33,13 @@ function GroupDetailed() {
           const groupData = groupSnap.data();
           const memberList = groupData.members || [];
 
-          // Check if user is a member
-          const isMember = memberList.some((member) => member.id === user.uid);
+          const currentUser = memberList.find((m) => m.id === user.uid);
+          const isMember = !!currentUser;
+          const isUserAdmin = currentUser?.role === "admin";
 
-          if (isMember) {
-            setIsAuthorized(true);
-            setGroup({ id: groupSnap.id, ...groupData });
-          } else {
-            setIsAuthorized(false);
-          }
+          setIsAuthorized(isMember);
+          setIsAdmin(isUserAdmin);
+          setGroup({ id: groupSnap.id, ...groupData });
         } else {
           console.log("Group not found");
           navigate("/groups");
@@ -54,6 +53,27 @@ function GroupDetailed() {
 
     fetchGroup();
   }, [groupId, user, navigate]);
+
+  const handleRemoveMember = async (memberId) => {
+    if (!group) return;
+
+    const updatedMembers = group.members.filter((m) => m.id !== memberId);
+
+    try {
+      const groupRef = doc(db, "groups", groupId);
+      await updateDoc(groupRef, {
+        members: updatedMembers,
+      });
+
+      // Update UI
+      setGroup((prev) => ({
+        ...prev,
+        members: updatedMembers,
+      }));
+    } catch (err) {
+      console.error("Failed to remove member:", err);
+    }
+  };
 
   if (isLoading) return <p>Loading...</p>;
   if (!user) return <p>Please log in to view this group.</p>;
@@ -69,6 +89,16 @@ function GroupDetailed() {
         {group.members?.map((member, index) => (
           <li key={index}>
             {member.name} ({member.role})
+            {isAdmin && member.id !== user.uid && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => handleRemoveMember(member.id)}
+                className="ms-2"
+              >
+                Remove
+              </Button>
+            )}
           </li>
         ))}
       </ul>

@@ -57,41 +57,45 @@ function Header() {
                   Home
                 </Link>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/login">
-                  Login
-                </a>
-              </li>
+              {!user && (
+                <li className="nav-item">
+                  <a className="nav-link" href="/login">
+                    Login
+                  </a>
+                </li>
+              )}
 
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {user}
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <Link class="dropdown-item" to={"/profile"}>
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Another action
-                    </a>
-                  </li>
+              {user && (
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    {user}
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <Link class="dropdown-item" to={"/profile"}>
+                        Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">
+                        Another action
+                      </a>
+                    </li>
 
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
-              </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              )}
             </ul>
             <form class="d-flex" role="search">
               <input

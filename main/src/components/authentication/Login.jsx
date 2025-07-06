@@ -75,7 +75,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="form-control"
                 placeholder="Your message..."
-                password
+                type="password"
               />
             </div>
             <Button onClick={userLogin}>Log in</Button>
