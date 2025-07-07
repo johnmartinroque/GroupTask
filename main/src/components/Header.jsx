@@ -13,7 +13,7 @@ function Header() {
       await signOut(auth);
       localStorage.removeItem("userEmail");
       setUserEmail(null);
-      navigate("/");
+      navigate("/landing");
     } catch (err) {
       console.error("Logout error:", err);
     }

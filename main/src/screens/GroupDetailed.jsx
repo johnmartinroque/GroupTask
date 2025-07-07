@@ -18,6 +18,23 @@ function GroupDetailed() {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const leaveGroup = async () => {
+    if (!group || !user) return;
+
+    const updatedMembers = group.members.filter((m) => m.id !== user.uid);
+
+    try {
+      const groupRef = doc(db, "groups", groupId);
+      await updateDoc(groupRef, {
+        members: updatedMembers,
+      });
+
+      navigate("/");
+    } catch (err) {
+      console.error("Failed to leave group:", err);
+    }
+  };
+
   useEffect(() => {
     const fetchGroup = async () => {
       if (!user) {
@@ -109,6 +126,19 @@ function GroupDetailed() {
         </Col>
       </Row>
       <GroupTasks groupId={group.id} />
+      {isAuthorized && (
+        <Button
+          variant="warning"
+          className="mb-3"
+          onClick={leaveGroup}
+          disabled={
+            isAdmin &&
+            group.members.filter((m) => m.role === "admin").length === 1
+          }
+        >
+          Leave Group
+        </Button>
+      )}
     </div>
   );
 }
