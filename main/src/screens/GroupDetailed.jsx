@@ -6,6 +6,7 @@ import AddTask from "../components/task/AddTask";
 import { Col, Row, Button } from "react-bootstrap";
 import GroupTasks from "../components/task/GroupTasks";
 import { getAuth } from "firebase/auth";
+import GroupMembers from "../components/group/GroupMembers";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -101,24 +102,11 @@ function GroupDetailed() {
   return (
     <div>
       <h2>{group.groupName}</h2>
-      <h4>Members:</h4>
-      <ul>
-        {group.members?.map((member, index) => (
-          <li key={index}>
-            {member.name} ({member.role})
-            {isAdmin && member.id !== user.uid && (
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => handleRemoveMember(member.id)}
-                className="ms-2"
-              >
-                Remove
-              </Button>
-            )}
-          </li>
-        ))}
-      </ul>
+      <GroupMembers
+        members={group.members}
+        isAdmin={isAdmin}
+        handleRemoveMember={handleRemoveMember}
+      />
 
       <Row>
         <Col>
