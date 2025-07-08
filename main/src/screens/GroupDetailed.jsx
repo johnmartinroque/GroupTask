@@ -8,6 +8,7 @@ import GroupTasks from "../components/task/GroupTasks";
 import { getAuth } from "firebase/auth";
 import GroupMembers from "../components/group/GroupMembers";
 import LeaveGroup from "../components/modals/LeaveGroup";
+import RemoveMember from "../components/modals/RemoveMember";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -16,6 +17,9 @@ function GroupDetailed() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [memberToRemove, setMemberToRemove] = useState(null);
+
   const navigate = useNavigate();
 
   const auth = getAuth();
@@ -114,6 +118,36 @@ function GroupDetailed() {
     }
   };
 
+  const requestRemoveMember = (member) => {
+    setMemberToRemove(member);
+    setShowRemoveModal(true);
+  };
+
+  const confirmRemoveMember = async () => {
+    if (!group || !memberToRemove) return;
+
+    const updatedMembers = group.members.filter(
+      (m) => m.id !== memberToRemove.id
+    );
+
+    try {
+      const groupRef = doc(db, "groups", groupId);
+      await updateDoc(groupRef, {
+        members: updatedMembers,
+      });
+
+      setGroup((prev) => ({
+        ...prev,
+        members: updatedMembers,
+      }));
+
+      setShowRemoveModal(false);
+      setMemberToRemove(null);
+    } catch (err) {
+      console.error("Failed to remove member:", err);
+    }
+  };
+
   if (isLoading) return <p>Loading...</p>;
   if (!user) return <p>Please log in to view this group.</p>;
   if (!isAuthorized)
@@ -126,7 +160,7 @@ function GroupDetailed() {
       <GroupMembers
         members={group.members}
         isAdmin={isAdmin}
-        handleRemoveMember={handleRemoveMember}
+        handleRemoveMember={requestRemoveMember}
       />
 
       <Row>
@@ -154,6 +188,12 @@ function GroupDetailed() {
         onConfirm={confirmLeaveGroup}
         title="Leave Group Confirmation"
         body={`Are you sure you want to leave "${group.groupName}"?`}
+      />
+      <RemoveMember
+        show={showRemoveModal}
+        onClose={() => setShowRemoveModal(false)}
+        onConfirm={confirmRemoveMember}
+        name={memberToRemove?.name || "this member"}
       />
     </div>
   );

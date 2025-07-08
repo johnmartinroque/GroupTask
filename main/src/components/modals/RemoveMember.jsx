@@ -1,23 +1,23 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-function LeaveGroup({ show, onClose, onConfirm, name }) {
+export default function RemoveMember({ show, onClose, onConfirm, name }) {
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{name}</Modal.Title>
+        <Modal.Title>Remove Member</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{"something"}</Modal.Body>
+      <Modal.Body>
+        Are you sure you want to remove <strong>{name}</strong> from the group?
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Cancel
         </Button>
         <Button variant="danger" onClick={onConfirm}>
-          Leave Group
+          Remove
         </Button>
       </Modal.Footer>
     </Modal>
   );
 }
-
-export default LeaveGroup;

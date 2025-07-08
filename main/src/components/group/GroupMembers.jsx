@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import { getAuth } from "firebase/auth";
+import RemoveMember from "../modals/RemoveMember";
 
 function GroupMembers({ members, isAdmin, handleRemoveMember }) {
   const auth = getAuth();
@@ -16,12 +17,13 @@ function GroupMembers({ members, isAdmin, handleRemoveMember }) {
               <Button
                 variant="danger"
                 size="sm"
-                onClick={() => handleRemoveMember(member.id)}
+                onClick={() => handleRemoveMember(member)}
                 className="ms-2"
               >
                 Remove
               </Button>
             )}
+            <RemoveMember name={member.name} />
           </li>
         ))}
       </ul>
