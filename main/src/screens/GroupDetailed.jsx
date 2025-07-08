@@ -7,6 +7,7 @@ import { Col, Row, Button } from "react-bootstrap";
 import GroupTasks from "../components/task/GroupTasks";
 import { getAuth } from "firebase/auth";
 import GroupMembers from "../components/group/GroupMembers";
+import LeaveGroup from "../components/modals/LeaveGroup";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -14,12 +15,32 @@ function GroupDetailed() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
   const navigate = useNavigate();
 
   const auth = getAuth();
   const user = auth.currentUser;
 
   const leaveGroup = async () => {
+    if (!group || !user) return;
+
+    const updatedMembers = group.members.filter((m) => m.id !== user.uid);
+
+    try {
+      const groupRef = doc(db, "groups", groupId);
+      await updateDoc(groupRef, {
+        members: updatedMembers,
+      });
+
+      navigate("/");
+    } catch (err) {
+      console.error("Failed to leave group:", err);
+    }
+  };
+
+  const confirmLeaveGroup = async () => {
+    setShowLeaveModal(false);
+
     if (!group || !user) return;
 
     const updatedMembers = group.members.filter((m) => m.id !== user.uid);
@@ -118,7 +139,7 @@ function GroupDetailed() {
         <Button
           variant="warning"
           className="mb-3"
-          onClick={leaveGroup}
+          onClick={() => setShowLeaveModal(true)}
           disabled={
             isAdmin &&
             group.members.filter((m) => m.role === "admin").length === 1
@@ -127,6 +148,13 @@ function GroupDetailed() {
           Leave Group
         </Button>
       )}
+      <LeaveGroup
+        show={showLeaveModal}
+        onClose={() => setShowLeaveModal(false)}
+        onConfirm={confirmLeaveGroup}
+        title="Leave Group Confirmation"
+        body={`Are you sure you want to leave "${group.groupName}"?`}
+      />
     </div>
   );
 }

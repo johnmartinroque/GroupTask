@@ -6,10 +6,19 @@ import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
 
 function Home() {
+  const [showModal, setShowModal] = useState(false);
+
+  const show = () => {
+    setShowModal(true);
+    if (showModal) {
+      setShowModal(false);
+    }
+  };
   return (
     <div>
       {/*    */}
       <Tasks />
+      <Groups />
       <MyGroups />
     </div>
   );
