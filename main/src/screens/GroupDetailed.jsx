@@ -9,6 +9,8 @@ import { getAuth } from "firebase/auth";
 import GroupMembers from "../components/group/GroupMembers";
 import LeaveGroup from "../components/modals/LeaveGroup";
 import RemoveMember from "../components/modals/RemoveMember";
+import Scores from "../components/group/Scores";
+import TasksHistory from "../components/group/TasksHistory";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -195,6 +197,8 @@ function GroupDetailed() {
         onConfirm={confirmRemoveMember}
         name={memberToRemove?.name || "this member"}
       />
+      <Scores />
+      <TasksHistory />
     </div>
   );
 }
