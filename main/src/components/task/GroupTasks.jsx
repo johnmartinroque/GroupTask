@@ -16,10 +16,12 @@ function GroupTasks() {
     const q = query(tasksRef, where("groupId", "==", groupId));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const tasksData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const tasksData = snapshot.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter((task) => task.progress !== "Finished");
       setTasks(tasksData);
       setIsLoading(false);
     });
