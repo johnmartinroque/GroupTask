@@ -37,7 +37,8 @@ function Groups() {
       members: [
         {
           id: user.uid,
-          name: user.displayName || "Anonymous",
+          name: user.displayName || user.email.split("@")[0], // fallback to email prefix
+
           role: "admin", // ✅ mark creator as admin
         },
       ],

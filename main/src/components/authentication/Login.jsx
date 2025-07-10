@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { auth, googleProvider } from "../../firebase";
 import {
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -12,16 +11,18 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // 🔸 error state
   const navigate = useNavigate("");
+
   const googleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      console.log("Google login user email:", user.email);
       localStorage.setItem("userEmail", user.email);
       navigate("/");
     } catch (err) {
       console.error(err);
+      setErrorMessage("Google login failed.");
     }
   };
 
@@ -29,18 +30,31 @@ function Login() {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const user = result.user;
-      console.log("Logged in user email: ", user.email);
       localStorage.setItem("userEmail", user.email);
-      console.log(user.email);
       navigate("/");
     } catch (err) {
       console.error(err);
+      // 🔸 Display user-friendly error messages
+      switch (err.code) {
+        case "auth/user-not-found":
+          setErrorMessage("Email not found.");
+          break;
+        case "auth/wrong-password":
+          setErrorMessage("Incorrect password.");
+          break;
+        case "auth/invalid-email":
+          setErrorMessage("Invalid email format.");
+          break;
+        default:
+          setErrorMessage("Login failed. Please try again.");
+          break;
+      }
     }
   };
 
   const logoutUser = async () => {
     try {
-      signOut(auth);
+      await signOut(auth);
       localStorage.removeItem("userEmail");
       navigate("/");
     } catch (err) {
@@ -54,6 +68,12 @@ function Login() {
         <Row>
           <Col>
             <h1>Login</h1>
+
+            {/* 🔸 Error message display */}
+            {errorMessage && (
+              <div className="alert alert-danger py-2">{errorMessage}</div>
+            )}
+
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 Email address
@@ -74,14 +94,19 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="form-control"
-                placeholder="Your message..."
+                placeholder="Your password"
                 type="password"
               />
             </div>
             <Button onClick={userLogin}>Log in</Button>
           </Col>
         </Row>
-        <Button onClick={googleLogin}>Login with Google</Button>
+
+        <div className="mt-3">
+          <Button variant="outline-primary" onClick={googleLogin}>
+            Login with Google
+          </Button>
+        </div>
       </div>
     </div>
   );
