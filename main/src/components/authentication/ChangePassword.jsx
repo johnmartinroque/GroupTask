@@ -75,6 +75,7 @@ function ChangePassword() {
           </Col>
         </Row>
       </div>
+      {/*     */}
     </div>
   );
 }
