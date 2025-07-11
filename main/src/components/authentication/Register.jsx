@@ -8,8 +8,12 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [confirmPassword, setConfirmPassword] = useState("");
   const registerUser = async () => {
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
     try {
       const result = await createUserWithEmailAndPassword(
         auth,
@@ -68,6 +72,15 @@ function Register() {
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                className="form-control"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
             <Button onClick={registerUser}>Register</Button>
