@@ -41,8 +41,12 @@ function Register() {
       setErrorMessage("Registered");
     } catch (err) {
       console.error(err);
-      if (err.message === "Firebase: Error (auth/email-already-in-use).") {
+      if (err.code === "auth/email-already-in-use") {
         setErrorMessage("Email already in use");
+      } else if (err.code === "auth/weak-password") {
+        setErrorMessage("Password should be at least 6 characters");
+      } else {
+        setErrorMessage("Registration failed");
       }
     }
   };
