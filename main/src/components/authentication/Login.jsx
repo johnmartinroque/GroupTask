@@ -36,14 +36,11 @@ function Login() {
       console.error(err);
       // 🔸 Display user-friendly error messages
       switch (err.code) {
-        case "auth/user-not-found":
-          setErrorMessage("Email not found.");
-          break;
-        case "auth/wrong-password":
-          setErrorMessage("Incorrect password.");
-          break;
         case "auth/invalid-email":
           setErrorMessage("Invalid email format.");
+          break;
+        case "auth/invalid-credential":
+          setErrorMessage("Incorrect Email or Password");
           break;
         default:
           setErrorMessage("Login failed. Please try again.");
