@@ -10,6 +10,14 @@ function Register() {
   const [errorMessage, setErrorMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const registerUser = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // ✅ Check if email format is valid
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Invalid email format");
+      return;
+    }
+
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match");
       return;
