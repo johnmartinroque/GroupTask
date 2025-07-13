@@ -4,13 +4,15 @@ import { useParams, Link } from "react-router-dom";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { Card, Container, Button } from "react-bootstrap";
 import { db } from "../firebase";
+import { getAuth } from "firebase/auth";
 
 function TaskDetailed() {
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState("");
-
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
   const fetchTask = async () => {
     try {
       const taskDoc = await getDoc(doc(db, "tasks", taskId));
@@ -52,7 +54,11 @@ function TaskDetailed() {
   const updateTask = async () => {
     try {
       const taskRef = doc(db, "tasks", taskId);
-      await updateDoc(taskRef, { progress: progress });
+      await updateDoc(taskRef, {
+        progress: progress,
+        finishedBy:
+          progress === "Finished" && currentUser ? currentUser.email : "",
+      });
       fetchTask();
     } catch (err) {
       console.error(err);

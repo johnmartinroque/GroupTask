@@ -10,7 +10,7 @@ import GroupMembers from "../components/group/GroupMembers";
 import LeaveGroup from "../components/modals/LeaveGroup";
 import RemoveMember from "../components/modals/RemoveMember";
 import Scores from "../components/group/Scores";
-import TasksHistory from "../components/group/TasksHistory";
+import TasksHistory from "../components/task/TasksHistory";
 
 function GroupDetailed() {
   const { groupId } = useParams();

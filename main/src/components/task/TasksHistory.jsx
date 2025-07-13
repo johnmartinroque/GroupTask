@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, Spinner } from "react-bootstrap";
 
 function TasksHistory() {
@@ -43,8 +43,11 @@ function TasksHistory() {
       <h4 className="mt-4">Finished Tasks</h4>
       {finishedTasks.map((task) => (
         <Card key={task.id} className="mb-2 p-2">
-          <strong>{task.name}</strong>
+          <strong>
+            <Link to={`/tasks/${task.id}`}>{task.name}</Link>
+          </strong>
           <div>Progress: {task.progress}</div>
+          {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
         </Card>
       ))}
     </div>
