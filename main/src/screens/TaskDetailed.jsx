@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { Card, Container, Button } from "react-bootstrap";
 import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
+import DeleteTaskModal from "../components/modals/DeleteTask";
 
 function TaskDetailed() {
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const fetchTask = async () => {
@@ -19,14 +23,39 @@ function TaskDetailed() {
       if (taskDoc.exists()) {
         const data = { id: taskDoc.id, ...taskDoc.data() };
         setTask(data);
-        setProgress(data.progress || ""); // pre-fill the select input
+        setProgress(data.progress || "");
+
+        // Fetch group info to check if user is admin
+        const groupRef = doc(db, "groups", data.groupId);
+        const groupSnap = await getDoc(groupRef);
+
+        if (groupSnap.exists()) {
+          const groupData = groupSnap.data();
+          const userId = auth.currentUser?.uid;
+          const isUserAdmin = groupData.members?.some(
+            (member) => member.id === userId && member.role === "admin"
+          );
+          setIsAdmin(isUserAdmin);
+        }
       } else {
         console.log("No such task!");
       }
     } catch (error) {
-      console.error("Error fetching task:", error);
+      console.error("Error fetching task or group:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const deleteTask = async () => {
+    try {
+      await deleteDoc(doc(db, "tasks", taskId));
+
+      // redirect to group task list
+      window.location.href = `/group/${task.groupId}`;
+      fetchTask();
+    } catch (err) {
+      console.error("Error deleting task:", err);
     }
   };
 
@@ -95,6 +124,19 @@ function TaskDetailed() {
           <Button variant="success" className="me-2" onClick={updateTask}>
             Update Status
           </Button>
+          {isAdmin && (
+            <>
+              <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+                Delete Task
+              </Button>
+              <DeleteTaskModal
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={deleteTask}
+                taskName={task.name}
+              />
+            </>
+          )}
         </Card.Body>
       </Card>
       <Link to={`/group/${task.groupId}`}>
