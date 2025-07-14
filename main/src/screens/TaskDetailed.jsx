@@ -97,8 +97,8 @@ function TaskDetailed() {
           </Button>
         </Card.Body>
       </Card>
-      <Link to="/">
-        <Button variant="primary">Back to Tasks</Button>
+      <Link to={`/group/${task.groupId}`}>
+        <Button variant="primary">Back</Button>
       </Link>
     </Container>
   );
