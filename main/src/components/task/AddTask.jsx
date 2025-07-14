@@ -8,8 +8,6 @@ function AddTask(props) {
   const { fetchNewTasks, groupId, groupName } = props;
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
-  const [newDate, setNewDate] = useState("");
-  const [progress, setProgress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -17,7 +15,7 @@ function AddTask(props) {
   const taskListCollectionRef = collection(db, "tasks");
 
   const addTask = async () => {
-    if (!newName.trim() || !newDescription.trim() || !newDate) {
+    if (!newName.trim() || !newDescription.trim()) {
       setMessage("All fields are required.");
       setMessageType("danger");
       return;
@@ -25,12 +23,29 @@ function AddTask(props) {
 
     try {
       setIsLoading(true);
-      const currentDate = new Date().toISOString().slice(0, 10);
+
+      // Get current date and time in 12-hour format with AM/PM
+      const now = new Date();
+
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12 || 12; // Convert to 12-hour format
+
+      const formattedDateTime = `${year}-${month}-${day} ${String(
+        hours
+      ).padStart(2, "0")}:${minutes}:${seconds} ${ampm}`;
 
       await addDoc(taskListCollectionRef, {
         name: newName.trim(),
         description: newDescription.trim(),
-        datePosted: currentDate,
+        datePosted: formattedDateTime,
         progress: "No progress",
         createdBy: user.email,
         groupId: groupId,
@@ -39,7 +54,6 @@ function AddTask(props) {
 
       setNewName("");
       setNewDescription("");
-      setNewDate("");
       setMessage("Task added successfully!");
       setMessageType("success");
 
@@ -63,19 +77,17 @@ function AddTask(props) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    return () => unsubscribe(); // cleanup listener on unmount
+    return () => unsubscribe();
   }, []);
 
   return (
     <div>
       <Row>
         <Col>
-          {isLoading ? (
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
+          {isLoading && (
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
             </div>
-          ) : (
-            <></>
           )}
           {!user ? (
             <Alert variant="warning">Please log in to add tasks.</Alert>
@@ -83,19 +95,16 @@ function AddTask(props) {
             <>
               <input
                 type="text"
+                placeholder="Task Name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-              ></input>
+              />
               <input
                 type="text"
+                placeholder="Task Description"
                 value={newDescription}
                 onChange={(e) => setNewDescription(e.target.value)}
-              ></input>
-              <input
-                type="date"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-              ></input>
+              />
               <Button onClick={addTask}>SUBMIT</Button>
             </>
           )}
