@@ -32,21 +32,45 @@ function Groups() {
       return;
     }
 
+    const trimmedGroupName = newGroupName.trim();
+    if (!trimmedGroupName) {
+      alert("Group name cannot be empty.");
+      return;
+    }
+
+    const duplicate = groupList.some(
+      (group) =>
+        group.groupName.toLowerCase() === trimmedGroupName.toLowerCase()
+    );
+
+    if (duplicate) {
+      alert("A group with this name already exists.");
+      return;
+    }
+
     const newGroup = {
-      groupName: newGroupName,
+      groupName: trimmedGroupName,
       members: [
         {
           id: user.uid,
-          name: user.displayName || user.email.split("@")[0], // fallback to email prefix
-
-          role: "admin", // ✅ mark creator as admin
+          name: user.displayName || user.email.split("@")[0],
+          role: "admin",
         },
       ],
     };
 
-    await addDoc(groupCollectionRef, newGroup);
-    getGroupList();
-    setNewGroupName("");
+    try {
+      const docRef = await addDoc(groupCollectionRef, newGroup);
+      const newGroupId = docRef.id;
+
+      await getGroupList();
+      setNewGroupName("");
+
+      // ✅ Navigate to the newly created group's page
+      navigate(`/group/${newGroupId}`);
+    } catch (err) {
+      console.error("Error creating group:", err);
+    }
   };
 
   const getGroupList = async () => {

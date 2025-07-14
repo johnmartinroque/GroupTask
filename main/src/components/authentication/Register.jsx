@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { Button, Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState(""); // 👈 name input
@@ -9,6 +10,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate("");
   const registerUser = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,6 +41,7 @@ function Register() {
       setPassword("");
       setName("");
       setErrorMessage("Registered");
+      navigate("/");
     } catch (err) {
       console.error(err);
       if (err.code === "auth/email-already-in-use") {
