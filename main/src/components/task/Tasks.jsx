@@ -29,16 +29,22 @@ function Tasks() {
     try {
       setIsLoading(true);
 
-      // Step 1: Get all groups user is a member of
       const groupsSnapshot = await getDocs(collection(db, "groups"));
-      const userGroups = groupsSnapshot.docs
-        .filter((doc) => (doc.data().members || []).some((m) => m.id === uid))
-        .map((doc) => ({
-          id: doc.id,
-          name: doc.data().groupName,
-        }));
 
-      // Step 2: For each group, get its tasks (excluding finished)
+      // ✅ Only include groups where the user's role is not "pending"
+      const userGroups = groupsSnapshot.docs
+        .map((doc) => {
+          const data = doc.data();
+          const userMember = (data.members || []).find((m) => m.id === uid);
+          return userMember && userMember.role !== "pending"
+            ? {
+                id: doc.id,
+                name: data.groupName,
+              }
+            : null;
+        })
+        .filter(Boolean); // remove nulls
+
       const tasksRef = collection(db, "tasks");
       const groupedTasks = {};
 
@@ -47,11 +53,17 @@ function Tasks() {
         const taskSnap = await getDocs(q);
 
         groupedTasks[group.name] = taskSnap.docs
-          .map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }))
-          .filter((task) => task.progress !== "Finished"); // ❌ Exclude "Finished"
+          .map((doc) => {
+            const data = doc.data();
+            return {
+              ...data,
+              id: doc.id,
+              datePosted: data.datePosted?.toDate
+                ? data.datePosted.toDate()
+                : null, // ✅ date fix
+            };
+          })
+          .filter((task) => task.progress !== "Finished");
       }
 
       setTasksByGroup(groupedTasks);
