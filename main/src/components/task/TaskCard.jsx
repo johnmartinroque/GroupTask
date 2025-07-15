@@ -3,7 +3,8 @@ import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function TaskCard(props) {
-  const { id, name, description, datePosted, progress } = props;
+  const { id, name, description, datePosted, progress, groupName, groupId } =
+    props;
   const formattedDate =
     datePosted && typeof datePosted.toDate === "function"
       ? datePosted.toDate().toLocaleDateString("en-US") // Format as a readable date string
@@ -17,6 +18,7 @@ function TaskCard(props) {
           </Link>
           <p>{formattedDate}</p>
           <p class="card-text">{description}</p>
+
           <p>Progress: {progress} </p>
 
           <Link to={`/tasks/${id}`} className="card-link">

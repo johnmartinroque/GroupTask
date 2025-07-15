@@ -52,18 +52,21 @@ function Tasks() {
         const q = query(tasksRef, where("groupId", "==", group.id));
         const taskSnap = await getDocs(q);
 
-        groupedTasks[group.name] = taskSnap.docs
-          .map((doc) => {
-            const data = doc.data();
-            return {
-              ...data,
-              id: doc.id,
-              datePosted: data.datePosted?.toDate
-                ? data.datePosted.toDate()
-                : null, // ✅ date fix
-            };
-          })
-          .filter((task) => task.progress !== "Finished");
+        groupedTasks[group.id] = {
+          groupName: group.name,
+          tasks: taskSnap.docs
+            .map((doc) => {
+              const data = doc.data();
+              return {
+                ...data,
+                id: doc.id,
+                datePosted: data.datePosted?.toDate
+                  ? data.datePosted.toDate()
+                  : null,
+              };
+            })
+            .filter((task) => task.progress !== "Finished"),
+        };
       }
 
       setTasksByGroup(groupedTasks);
@@ -94,12 +97,20 @@ function Tasks() {
         </div>
       ) : userId ? (
         <>
-          {Object.entries(tasksByGroup).map(([groupName, tasks]) => (
-            <div key={groupName}>
-              <h4 className="mt-4 mb-3">{groupName}</h4>
+          {Object.entries(tasksByGroup).map(([groupId, groupData]) => (
+            <div key={groupId}>
+              <h4 className="mt-4 mb-3">
+                <a
+                  href={`/group/${groupId}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  {groupData.groupName}
+                </a>
+              </h4>
               <Row className="g-4">
-                {tasks.length > 0 ? (
-                  tasks.map((task) => (
+                {Array.isArray(groupData.tasks) &&
+                groupData.tasks.length > 0 ? (
+                  groupData.tasks.map((task) => (
                     <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
                       <TaskCard
                         id={task.id}
@@ -107,6 +118,8 @@ function Tasks() {
                         description={task.description}
                         datePosted={task.datePosted}
                         progress={task.progress}
+                        groupName={groupData.groupName}
+                        groupId={groupId}
                       />
                     </Col>
                   ))
