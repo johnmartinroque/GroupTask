@@ -4,13 +4,14 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHwPshjipm6ZeDIx9TP_Rwn-w1I2YkZdE",
-  authDomain: "grouptask-4588c.firebaseapp.com",
-  projectId: "grouptask-4588c",
-  storageBucket: "grouptask-4588c.firebasestorage.app",
-  messagingSenderId: "171229055631",
-  appId: "1:171229055631:web:bec4f5aa000618722fbefa",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
+
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
