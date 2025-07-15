@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Spinner } from "react-bootstrap";
 import { auth, googleProvider } from "../../firebase";
 import {
   signInWithEmailAndPassword,
@@ -11,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // 🔸 error state
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate("");
 
   const googleLogin = async () => {
@@ -19,10 +20,13 @@ function Login() {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
       localStorage.setItem("userEmail", user.email);
+      setLoading(true);
       navigate("/");
     } catch (err) {
       console.error(err);
       setErrorMessage("Google login failed.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,6 +68,13 @@ function Login() {
       <div className="bg-white rounded p-4 shadow" style={{ width: "40rem" }}>
         <Row>
           <Col>
+            {loading ? (
+              <>
+                <Spinner />
+              </>
+            ) : (
+              <></>
+            )}
             <h1>Login</h1>
 
             {/* 🔸 Error message display */}

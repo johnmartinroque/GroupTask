@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 
 function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,11 @@ function ProtectedRoute({ children }) {
   }, []);
 
   if (loading) {
-    return <p>Loading...</p>; // or a spinner
+    return (
+      <p>
+        <Spinner />
+      </p>
+    ); // or a spinner
   }
 
   return isAuthenticated ? children : <Navigate to="/landing" replace />;

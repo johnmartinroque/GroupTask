@@ -1,7 +1,7 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -10,6 +10,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate("");
   const registerUser = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,6 +43,7 @@ function Register() {
       setName("");
       setErrorMessage("Registered");
       navigate("/");
+      setLoading(true);
     } catch (err) {
       console.error(err);
       if (err.code === "auth/email-already-in-use") {
@@ -51,6 +53,8 @@ function Register() {
       } else {
         setErrorMessage("Registration failed");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,6 +63,13 @@ function Register() {
       <div className="bg-white rounded p-4 shadow" style={{ width: "40rem" }}>
         <Row>
           <Col>
+            {loading ? (
+              <>
+                <Spinner />
+              </>
+            ) : (
+              <></>
+            )}
             <h1>Register</h1>
             <div className="mb-3">
               <label className="form-label">Full Name</label>

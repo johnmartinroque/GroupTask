@@ -9,9 +9,9 @@ function GroupMembers({ members, isAdmin, handleRemoveMember }) {
   return (
     <div>
       <h4>Members:</h4>
-      <ul>
+      <>
         {members?.map((member, index) => (
-          <li key={index}>
+          <p key={index}>
             {member.name} ({member.role})
             {isAdmin && member.id !== user?.uid && (
               <Button
@@ -24,9 +24,9 @@ function GroupMembers({ members, isAdmin, handleRemoveMember }) {
               </Button>
             )}
             <RemoveMember name={member.name} />
-          </li>
+          </p>
         ))}
-      </ul>
+      </>
     </div>
   );
 }

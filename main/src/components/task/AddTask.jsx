@@ -1,7 +1,7 @@
 import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { auth, db } from "../../firebase";
-import { Alert, Button, Col, Row } from "react-bootstrap";
+import { Alert, Button, Col, Row, Spinner } from "react-bootstrap";
 import { onAuthStateChanged } from "firebase/auth";
 
 function AddTask(props) {
@@ -86,7 +86,9 @@ function AddTask(props) {
         <Col>
           {isLoading && (
             <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
+              <span className="visually-hidden">
+                <Spinner />
+              </span>
             </div>
           )}
           {!user ? (

@@ -3,7 +3,7 @@ import { db, auth } from "../../firebase";
 import TaskCard from "./TaskCard";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { Alert, Button, Col, Container, Row } from "react-bootstrap";
+import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
 
 function Tasks() {
   const [tasksByGroup, setTasksByGroup] = useState({});
@@ -75,7 +75,9 @@ function Tasks() {
       {isLoading ? (
         <div className="d-flex justify-content-center my-5">
           <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
+            <span className="visually-hidden">
+              <Spinner />
+            </span>
           </div>
         </div>
       ) : userId ? (

@@ -4,7 +4,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link, useParams } from "react-router-dom";
 import { Card, Spinner } from "react-bootstrap";
 
-function TasksHistory() {
+function FinishedTasks() {
   const { groupId } = useParams();
   const [finishedTasks, setFinishedTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,4 +54,4 @@ function TasksHistory() {
   );
 }
 
-export default TasksHistory;
+export default FinishedTasks;

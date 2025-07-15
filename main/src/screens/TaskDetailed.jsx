@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { Card, Container, Button } from "react-bootstrap";
+import { Card, Container, Button, Spinner } from "react-bootstrap";
 import { db } from "../firebase";
 import { getAuth } from "firebase/auth";
 import DeleteTaskModal from "../components/modals/DeleteTask";
@@ -67,7 +67,9 @@ function TaskDetailed() {
     return (
       <div className="d-flex justify-content-center my-5">
         <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">
+            <Spinner />
+          </span>
         </div>
       </div>
     );
