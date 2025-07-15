@@ -24,7 +24,9 @@ function MyGroups() {
           ...doc.data(),
         }))
         .filter((group) =>
-          group.members?.some((member) => member.id === userId)
+          group.members?.some(
+            (member) => member.id === userId && member.role !== "pending"
+          )
         );
 
       setMyGroups(filteredGroups);

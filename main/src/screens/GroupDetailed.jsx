@@ -11,6 +11,7 @@ import LeaveGroup from "../components/modals/LeaveGroup";
 import RemoveMember from "../components/modals/RemoveMember";
 import Scores from "../components/group/Scores";
 import FinishedTasks from "../components/task/FinishedTasks";
+import JoinRequests from "../components/group/JoinRequests";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -21,6 +22,7 @@ function GroupDetailed() {
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -81,8 +83,10 @@ function GroupDetailed() {
           const currentUser = memberList.find((m) => m.id === user.uid);
           const isMember = !!currentUser;
           const isUserAdmin = currentUser?.role === "admin";
+          const isUserPending = currentUser?.role === "pending";
 
           setIsAuthorized(isMember);
+          setIsPending(isUserPending);
           setIsAdmin(isUserAdmin);
           setGroup({ id: groupSnap.id, ...groupData });
         } else {
@@ -154,6 +158,7 @@ function GroupDetailed() {
   if (!user) return <p>Please log in to view this group.</p>;
   if (!isAuthorized)
     return <p>Access denied. You are not a member of this group.</p>;
+  if (isPending) return <p>Your request to join is pending.</p>;
   if (!group) return <p>Group not found.</p>;
 
   return (
@@ -199,6 +204,7 @@ function GroupDetailed() {
       />
       <Scores />
       <FinishedTasks />
+      {isAdmin && <JoinRequests group={group} setGroup={setGroup} />}
     </div>
   );
 }
