@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import Tasks from "../components/task/Tasks";
 import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
+import "../src_css/screens/Home.css";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
