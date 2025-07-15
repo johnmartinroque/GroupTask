@@ -29,7 +29,7 @@ function Header() {
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          Navbar
+          LiamWayne
         </Link>
         <button
           className="navbar-toggler"
