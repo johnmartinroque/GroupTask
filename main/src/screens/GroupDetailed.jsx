@@ -12,6 +12,7 @@ import RemoveMember from "../components/modals/RemoveMember";
 import Scores from "../components/group/Scores";
 import FinishedTasks from "../components/task/FinishedTasks";
 import JoinRequests from "../components/group/JoinRequests";
+import Chat from "../components/group/chat/Chat";
 
 function GroupDetailed() {
   const { groupId } = useParams();
