@@ -9,6 +9,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { Filter } from "bad-words";
 
 let anonymousId = Math.floor(Math.random() * 100000); // Generates unique anonymous ID
 function Chat() {
@@ -34,8 +35,11 @@ function Chat() {
     event.preventDefault();
     if (newMessage.trim() === "") return;
 
+    const filter = new Filter();
+    const cleanedMessage = filter.clean(newMessage); // Replaces bad words with ****
+
     await addDoc(messagesRef, {
-      text: newMessage,
+      text: cleanedMessage,
       createdAt: serverTimestamp(),
       user,
     });
