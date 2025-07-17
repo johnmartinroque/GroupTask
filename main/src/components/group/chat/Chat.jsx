@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   collection,
   addDoc,
@@ -7,54 +6,72 @@ import {
   onSnapshot,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { Filter } from "bad-words";
+import { getAuth } from "firebase/auth";
 
-let anonymousId = Math.floor(Math.random() * 100000); // Generates unique anonymous ID
-function Chat() {
+function Chat({ groupId, groupMembers }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [user] = useState(`Anonymous${anonymousId}`);
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
   const messagesRef = collection(db, "messages");
 
   useEffect(() => {
-    const queryMessages = query(messagesRef, orderBy("createdAt"));
+    if (!groupId) return;
+    const queryMessages = query(
+      messagesRef,
+      where("groupId", "==", groupId),
+      orderBy("createdAt")
+    );
+
     const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
-      let messages = [];
-      snapshot.forEach((doc) => {
-        messages.push({ ...doc.data(), id: doc.id });
-      });
-      setMessages(messages);
+      const msgs = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setMessages(msgs);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [groupId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (newMessage.trim() === "") return;
+    if (!newMessage.trim() || !currentUser) return;
+
+    const userInGroup = groupMembers.find((m) => m.id === currentUser.uid);
+    if (!userInGroup) {
+      alert("You are not allowed to send messages in this group.");
+      return;
+    }
 
     const filter = new Filter();
-    const cleanedMessage = filter.clean(newMessage); // Replaces bad words with ****
+    const cleanedMessage = filter.clean(newMessage);
 
     await addDoc(messagesRef, {
       text: cleanedMessage,
       createdAt: serverTimestamp(),
-      user,
+      groupId,
+      userId: currentUser.uid,
+      userName: userInGroup.name || "Anonymous",
     });
 
     setNewMessage("");
   };
+
   return (
     <div className="chat-app">
       <div className="header">
-        <h1>Anonymous Chat</h1>
+        <h1>Group Chat</h1>
       </div>
       <div className="messages">
         {messages.map((message) => (
           <div key={message.id} className="message">
-            <span className="user">{message.user}:</span> {message.text}
+            <span className="user">{message.userName}:</span> {message.text}
           </div>
         ))}
       </div>
@@ -62,9 +79,9 @@ function Chat() {
         <input
           type="text"
           value={newMessage}
-          onChange={(event) => setNewMessage(event.target.value)}
+          onChange={(e) => setNewMessage(e.target.value)}
           className="new-message-input"
-          placeholder="Type your message here..."
+          placeholder="Type your message..."
         />
         <button type="submit" className="send-button">
           Send
