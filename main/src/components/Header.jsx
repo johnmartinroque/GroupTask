@@ -87,16 +87,14 @@ function Header() {
             )}
           </ul>
 
-          <form className="d-flex" role="search">
+          <form className="search-form d-flex" role="search">
             <input
-              className="form-control me-2"
+              className="form-control me-2 search-input"
               type="search"
               placeholder="Search"
               aria-label="Search"
             />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
+            <button className="btn btn-outline-success bi bi-search" type="submit"></button>
           </form>
         </div>
       </div>
