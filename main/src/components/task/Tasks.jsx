@@ -4,6 +4,7 @@ import TaskCard from "./TaskCard";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import "../../src_css/components/task/Tasks.css";
 
 function Tasks() {
   const [tasksByGroup, setTasksByGroup] = useState({});
@@ -99,10 +100,9 @@ function Tasks() {
         <>
           {Object.entries(tasksByGroup).map(([groupId, groupData]) => (
             <div key={groupId}>
-              <h4 className="mt-4 mb-3">
+              <h4>
                 <a
                   href={`/group/${groupId}`}
-                  style={{ textDecoration: "none" }}
                 >
                   {groupData.groupName}
                 </a>
@@ -112,6 +112,7 @@ function Tasks() {
                 groupData.tasks.length > 0 ? (
                   groupData.tasks.map((task) => (
                     <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
+                      <div className="task-card-wrapper">
                       <TaskCard
                         id={task.id}
                         name={task.name}
@@ -121,6 +122,7 @@ function Tasks() {
                         groupName={groupData.groupName}
                         groupId={groupId}
                       />
+                    </div>
                     </Col>
                   ))
                 ) : (

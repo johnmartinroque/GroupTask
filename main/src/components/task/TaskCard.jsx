@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "../../src_css/components/task/TaskCard.css";
 
 function TaskCard(props) {
   const { id, name, description, datePosted, progress, groupName, groupId } =
@@ -11,7 +12,6 @@ function TaskCard(props) {
       : "N/A"; // Or any placeholder for when datePosted is not available or not a Timestamp
   return (
     <div>
-      <div class="card" style={{ width: "18rem" }}>
         <div class="card-body">
           <Link to={`/tasks/${id}`} class="card-title">
             {name}
@@ -24,7 +24,6 @@ function TaskCard(props) {
           <Link to={`/tasks/${id}`} className="card-link">
             View Details
           </Link>
-        </div>
       </div>
     </div>
   );

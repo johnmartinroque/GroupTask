@@ -2,6 +2,7 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import "../src_css/components/Header.css";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -26,7 +27,7 @@ function Header() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary" id="nav">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
           LiamWayne
