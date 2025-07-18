@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import "../src_css/components/Header.css";
-import GroupTaskLogo from "./GroupTaskLogo.png";
+import HiveTaskLogo from "./HiveTaskLogo.png";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -42,8 +42,8 @@ function Header() {
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
           <img 
-        src={GroupTaskLogo} 
-        alt="Group Task Logo"
+        src={HiveTaskLogo} 
+        alt="HiveTask Logo"
         id="Logo" 
       />
         </Link>
@@ -67,7 +67,20 @@ function Header() {
                 </Link>
               </li>
 
-              {!user && (
+              
+              <form className="search-form d-flex" role="search" onSubmit={handleSearch}>
+            <button className="btn btn-outline-success bi bi-search" type="submit" id="search-but"></button>
+            <input
+              id="search-form"
+              className="form-control me-2 search-input"
+              type="search"
+              placeholder="Search groups..."
+              aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </form>
+          {!user && (
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">
                     Login
@@ -76,7 +89,7 @@ function Header() {
               )}
 
               {user && (
-                <li className="nav-item dropdown">
+                <li className="nav-item dropdown" id="last-main">
                   <a
                     className="nav-link dropdown-toggle"
                     href="#"
@@ -100,18 +113,6 @@ function Header() {
                   </ul>
                 </li>
               )}
-              <form className="search-form d-flex" role="search" onSubmit={handleSearch}>
-            <button className="btn btn-outline-success bi bi-search" type="submit" id="search-but"></button>
-            <input
-              id="search-form"
-              className="form-control me-2 search-input"
-              type="search"
-              placeholder="Search groups..."
-              aria-label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </form>
             </ul>
           </div>
         </div>

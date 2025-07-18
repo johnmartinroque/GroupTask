@@ -3,14 +3,14 @@
     position: fixed;
     width: 100%;
     z-index: 9999;
-    height: 10vh;
+    height: 5.625rem;
 }
 
 #sidebar {
-  margin-top: 7vh;
+  margin-top: 5.625rem;
   z-index: 9998;
   height: 100vh;             
-  width: 6vw;                 
+  width: 7.1rem;                 
   position: fixed;              
   top: 0;
   left: 0;
@@ -27,7 +27,7 @@
 }
 #sidebar .nav-item{
     background-color: #1f1f1f;
-    margin-left: 1.5vw;
+    margin-left: 1.8rem;
     margin-top: 2vh;
     border-radius: 10rem;
     padding: .3rem;
@@ -42,7 +42,7 @@
 
 .last-item{
     background-color: #1f1f1f;
-    margin-left: 1.5vw;
+    margin-left: 1.8rem;
     border-radius: 10rem;
     padding: .3rem;
     height: 3.8rem;
@@ -52,7 +52,17 @@
     border-radius: 50%;
     aspect-ratio: 1 / 1;
     font-size: x-large !important;
-    margin-top: 40vh;
+    position: fixed;
+    bottom: 4rem;
+}
+
+#last-main{
+    background-color: #1f1f1f;
+    border-radius: 10rem;
+    margin:0.5rem .5rem;
+    padding: .6rem;
+    position: fixed;
+    right: 0;
 }
 
 .nav-link{
@@ -79,7 +89,8 @@
 }
 
 #Logo{
-  height: 10vh;
+  height: 3.65625rem;
   aspect-ratio: 1/1;
   border-radius: 50%;
+  margin-left: 1.2rem;
 }
