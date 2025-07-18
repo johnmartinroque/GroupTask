@@ -2,6 +2,7 @@ import { signOut, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import "../src_css/components/Header.css";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -35,7 +36,7 @@ function Header() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary" id="nav">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
           LiamWayne
@@ -97,16 +98,17 @@ function Header() {
 
           <form className="d-flex" role="search" onSubmit={handleSearch}>
             <input
-              className="form-control me-2"
+              className="form-control me-2 search-input"
               type="search"
               placeholder="Search groups..."
               aria-label="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
+            <button
+              className="btn btn-outline-success bi bi-search"
+              type="submit"
+            ></button>
           </form>
         </div>
       </div>
