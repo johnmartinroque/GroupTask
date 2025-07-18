@@ -72,7 +72,7 @@ function Header() {
             <button className="btn btn-outline-success bi bi-search" type="submit" id="search-but"></button>
             <input
               id="search-form"
-              className="form-control me-2 search-input"
+              className={`form-control me-2 search-input ${searchTerm ? "has-value" : ""}`}
               type="search"
               placeholder="Search groups..."
               aria-label="Search"
@@ -89,17 +89,19 @@ function Header() {
               )}
 
               {user && (
-                <li className="nav-item dropdown" id="last-main">
-                  <a
-                    className="nav-link dropdown-toggle"
+                <div className="search-form d-flex" id="rightest" >
+                  <h5>
+                    {user.displayName || user.email}</h5>
+                <li className="nav-link active dropdown" id="last-main">
+                  <Link
+                    className="nav-link bi bi-person"
                     href="#"
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    {user.displayName || user.email}
-                  </a>
-                  <ul className="dropdown-menu">
+                  </Link>
+                  <ul className="dropdown-menu" id="draop">
                     <li>
                       <Link className="dropdown-item" to="/profile">
                         Profile
@@ -112,6 +114,7 @@ function Header() {
                     </li>
                   </ul>
                 </li>
+                </div>
               )}
             </ul>
           </div>
