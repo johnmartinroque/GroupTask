@@ -6,6 +6,7 @@ import { auth } from "../firebase";
 function Header() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -22,6 +23,14 @@ function Header() {
       alert("Successfully logged out");
     } catch (err) {
       console.error("Logout error:", err);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
     }
   };
 
@@ -86,12 +95,14 @@ function Header() {
             )}
           </ul>
 
-          <form className="d-flex" role="search">
+          <form className="d-flex" role="search" onSubmit={handleSearch}>
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search groups..."
               aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button className="btn btn-outline-success" type="submit">
               Search

@@ -10,6 +10,7 @@ import Profile from "./screens/Profile";
 import TaskDetailed from "./screens/TaskDetailed";
 import ProtectedRoute from "./components/authentication/ProtectedRoute";
 import LandingPage from "./components/authentication/LandingPage";
+import Search from "./components/Search";
 
 function App() {
   return (
@@ -57,6 +58,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <TaskDetailed />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute>
+                <Search />
               </ProtectedRoute>
             }
           />
