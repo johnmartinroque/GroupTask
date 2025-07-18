@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import "../src_css/components/Header.css";
+import GroupTaskLogo from "./GroupTaskLogo.png";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -27,11 +28,17 @@ function Header() {
   };
 
   return (
+    <div>
     <nav className="navbar navbar-expand-lg bg-body-tertiary" id="nav">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand">
-          LiamWayne
+          <img 
+        src={GroupTaskLogo} 
+        alt="Group Task Logo"
+        id="Logo" 
+      />
         </Link>
+        
         <button
           className="navbar-toggler"
           type="button"
@@ -85,20 +92,47 @@ function Header() {
                 </ul>
               </li>
             )}
-          </ul>
-
-          <form className="search-form d-flex" role="search">
+            <form className="search-form d-flex" role="search">
+            <button className="btn btn-outline-success bi bi-search" type="submit" id="search-but"></button>
             <input
+              id="search-form"
               className="form-control me-2 search-input"
               type="search"
               placeholder="Search"
               aria-label="Search"
             />
-            <button className="btn btn-outline-success bi bi-search" type="submit"></button>
           </form>
+          </ul>
         </div>
       </div>
     </nav>
+
+    <nav id="sidebar">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link to="/" className="nav-link active bi bi-activity" aria-current="page">
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/" className="nav-link active bi bi-calendar2-week" aria-current="page">
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/" className="nav-link active bi bi-person-add" aria-current="page" >
+              </Link>
+            </li>
+            <li className="nav-item ">
+              <Link to="/" className="nav-link active bi bi-gear" aria-current="page">
+              </Link>
+            </li>
+            <li className="last-item">
+              <Link to="/" className="nav-link active bi bi-plus-lg" aria-current="page">
+              </Link>
+            </li>
+      </ul>
+    </nav>
+</div>
+    
   );
 }
 
