@@ -6,24 +6,21 @@ import "../../src_css/components/task/TaskCard.css";
 function TaskCard(props) {
   const { id, name, description, datePosted, progress, groupName, groupId } =
     props;
-  const formattedDate =
-    datePosted && typeof datePosted.toDate === "function"
-      ? datePosted.toDate().toLocaleDateString("en-US") // Format as a readable date string
-      : "N/A"; // Or any placeholder for when datePosted is not available or not a Timestamp
+
   return (
     <div>
-        <div class="card-body">
-          <Link to={`/tasks/${id}`} class="card-title">
-            {name}
-          </Link>
-          <p>{formattedDate}</p>
-          <p class="card-text">{description}</p>
+      <div class="card-body">
+        <Link to={`/tasks/${id}`} class="card-title">
+          {name}
+        </Link>
+        <p>{datePosted}</p>
+        <p class="card-text">{description}</p>
 
-          <p>Progress: {progress} </p>
+        <p>Progress: {progress} </p>
 
-          <Link to={`/tasks/${id}`} className="card-link">
-            View Details
-          </Link>
+        <Link to={`/tasks/${id}`} className="card-link">
+          View Details
+        </Link>
       </div>
     </div>
   );

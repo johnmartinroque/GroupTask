@@ -61,9 +61,10 @@ function Tasks() {
               return {
                 ...data,
                 id: doc.id,
-                datePosted: data.datePosted?.toDate
-                  ? data.datePosted.toDate()
-                  : null,
+                datePosted:
+                  typeof data.datePosted === "string"
+                    ? data.datePosted
+                    : data.datePosted?.toDate?.() ?? "N/A",
               };
             })
             .filter((task) => task.progress !== "Finished"),
@@ -101,11 +102,7 @@ function Tasks() {
           {Object.entries(tasksByGroup).map(([groupId, groupData]) => (
             <div key={groupId}>
               <h4>
-                <a
-                  href={`/group/${groupId}`}
-                >
-                  {groupData.groupName}
-                </a>
+                <a href={`/group/${groupId}`}>{groupData.groupName}</a>
               </h4>
               <Row className="g-4">
                 {Array.isArray(groupData.tasks) &&
@@ -113,16 +110,16 @@ function Tasks() {
                   groupData.tasks.map((task) => (
                     <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
                       <div className="task-card-wrapper">
-                      <TaskCard
-                        id={task.id}
-                        name={task.name}
-                        description={task.description}
-                        datePosted={task.datePosted}
-                        progress={task.progress}
-                        groupName={groupData.groupName}
-                        groupId={groupId}
-                      />
-                    </div>
+                        <TaskCard
+                          id={task.id}
+                          name={task.name}
+                          description={task.description}
+                          datePosted={task.datePosted}
+                          progress={task.progress}
+                          groupName={groupData.groupName}
+                          groupId={groupId}
+                        />
+                      </div>
                     </Col>
                   ))
                 ) : (
