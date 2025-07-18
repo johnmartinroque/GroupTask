@@ -1,28 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  collection,
-  doc,
-  getDocs,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useSearchParams, Link } from "react-router-dom";
-import { Card, Container, Row, Col, Spinner, Button } from "react-bootstrap";
+import { Card, Container, Row, Col, Spinner } from "react-bootstrap";
 import { db } from "../firebase";
-import { getAuth } from "firebase/auth";
 
 function Search() {
   const [groups, setGroups] = useState([]);
   const [filteredGroups, setFilteredGroups] = useState([]);
-  const [pendingGroupIds, setPendingGroupIds] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("q")?.toLowerCase() || "";
-
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const userId = user?.uid;
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -34,22 +21,12 @@ function Search() {
           ...doc.data(),
           id: doc.id,
         }));
-
         setGroups(allGroups);
 
         const filtered = allGroups.filter((group) =>
           group.groupName?.toLowerCase().includes(searchQuery)
         );
         setFilteredGroups(filtered);
-
-        // Get pending group IDs for this user
-        const pendingIds = filtered
-          .filter((group) =>
-            group.members?.some((m) => m.id === userId && m.role === "pending")
-          )
-          .map((g) => g.id);
-
-        setPendingGroupIds(pendingIds);
       } catch (err) {
         console.error("Error fetching groups:", err);
       } finally {
@@ -57,33 +34,8 @@ function Search() {
       }
     };
 
-    if (user) {
-      fetchGroups();
-    }
-  }, [searchQuery, user]);
-
-  const joinGroup = async (groupId) => {
-    if (!user) {
-      alert("You must be logged in to join a group.");
-      return;
-    }
-
-    const groupRef = doc(db, "groups", groupId);
-    try {
-      await updateDoc(groupRef, {
-        members: arrayUnion({
-          id: user.uid,
-          name: user.displayName || user.email.split("@")[0],
-          role: "pending",
-        }),
-      });
-
-      setPendingGroupIds((prev) => [...prev, groupId]);
-      alert("Join request sent.");
-    } catch (err) {
-      console.error("Error sending join request:", err);
-    }
-  };
+    fetchGroups();
+  }, [searchQuery]);
 
   return (
     <Container className="mt-4">
@@ -95,40 +47,18 @@ function Search() {
             <p>Loading groups...</p>
           </div>
         ) : filteredGroups.length > 0 ? (
-          filteredGroups.map((group) => {
-            const userMembership = group.members?.find((m) => m.id === userId);
-            const isPending = userMembership?.role === "pending";
-            const isMember =
-              userMembership && userMembership.role !== "pending";
-
-            return (
-              <Col key={group.id} md={4} className="mb-3">
-                <Card>
-                  <Card.Body>
-                    <h5>{group.groupName}</h5>
-                    <Link to={`/group/${group.id}`}>View Group</Link>
-                    <div className="mt-2">
-                      {isMember ? (
-                        <Button variant="secondary" disabled>
-                          Member
-                        </Button>
-                      ) : isPending || pendingGroupIds.includes(group.id) ? (
-                        <Button variant="warning" disabled>
-                          Pending
-                        </Button>
-                      ) : (
-                        <Button onClick={() => joinGroup(group.id)}>
-                          Join Group
-                        </Button>
-                      )}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })
+          filteredGroups.map((group) => (
+            <Col key={group.id} md={4} className="mb-3">
+              <Card>
+                <Card.Body>
+                  <h5>{group.groupName}</h5>
+                  <Link to={`/group/${group.id}`}>View Group</Link>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))
         ) : (
-          <p>No groups found named "{searchQuery}".</p>
+          <p>No groups found names "{searchQuery}"</p>
         )}
       </Row>
     </Container>
