@@ -3,10 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./screens/Home";
-import 'bootstrap-icons/font/bootstrap-icons.css';
-
-
-
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 import LoginPage from "./screens/LoginPage";
 import GroupDetailed from "./screens/GroupDetailed";
