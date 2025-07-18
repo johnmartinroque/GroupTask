@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import "../src_css/components/Header.css";
+import GroupTaskLogo from "./GroupTaskLogo.png";
 
 function Header() {
   const [user, setUser] = useState(null);
