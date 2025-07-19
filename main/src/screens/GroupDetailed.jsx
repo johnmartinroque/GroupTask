@@ -13,6 +13,7 @@ import Scores from "../components/group/Scores";
 import FinishedTasks from "../components/task/FinishedTasks";
 import JoinRequests from "../components/group/JoinRequests";
 import Chat from "../components/group/chat/Chat";
+import Graph from "../components/group/graph/Graph";
 
 function GroupDetailed() {
   const { groupId } = useParams();
@@ -207,6 +208,7 @@ function GroupDetailed() {
       <FinishedTasks />
       <Chat groupId={group.id} groupMembers={group.members} />
       {isAdmin && <JoinRequests group={group} setGroup={setGroup} />}
+      <Graph />
     </div>
   );
 }
