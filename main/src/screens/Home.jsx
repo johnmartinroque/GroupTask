@@ -18,7 +18,8 @@ function Home() {
   return (
     <div>
       {/*    */}
-      <Tasks />*{/*    <Groups /> */}
+      <Tasks />
+      <Groups />
       <MyGroups />
     </div>
   );
