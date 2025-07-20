@@ -1,8 +1,9 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { Button, Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 function Register() {
   const [name, setName] = useState(""); // 👈 name input
@@ -36,6 +37,13 @@ function Register() {
       // 👇 Update displayName in Firebase Auth
       await updateProfile(user, {
         displayName: name,
+      });
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: name,
+        email: email,
+        createdAt: serverTimestamp(),
       });
 
       setEmail("");
