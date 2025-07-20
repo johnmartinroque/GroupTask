@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Col, Row, Spinner } from "react-bootstrap";
-import { auth, googleProvider } from "../../firebase";
+import { auth, db, googleProvider } from "../../firebase";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -19,6 +20,21 @@ function Login() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
+
+      // Check if user doc already exists in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        // 👇 Create user doc if it doesn't exist
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName || "", // fallback if displayName is null
+          email: user.email,
+          createdAt: serverTimestamp(),
+        });
+      }
+
       localStorage.setItem("userEmail", user.email);
       setLoading(true);
       navigate("/");

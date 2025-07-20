@@ -62,7 +62,7 @@ function Graph() {
 
   return (
     <div>
-      <h5 className="mb-3">Top 3 Finishers</h5>
+      <h5 className="mb-3">Top 3</h5>
       <ResponsiveContainer width="50%" height={300}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />

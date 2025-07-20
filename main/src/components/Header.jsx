@@ -158,7 +158,7 @@ function Header() {
           </li>
           <li className="last-item">
             <Link
-              to="/"
+              to="/createGroup"
               className="nav-link active bi bi-plus-lg"
               aria-current="page"
             ></Link>

@@ -210,7 +210,6 @@ function GroupDetailed() {
       <Chat groupId={group.id} groupMembers={group.members} />
       {isAdmin && <JoinRequests group={group} setGroup={setGroup} />}
       <Graph />
-      <InviteMembers />
     </div>
   );
 }

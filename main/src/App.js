@@ -12,6 +12,7 @@ import TaskDetailed from "./screens/TaskDetailed";
 import ProtectedRoute from "./components/authentication/ProtectedRoute";
 import LandingPage from "./components/authentication/LandingPage";
 import Search from "./components/Search";
+import CreateGroup from "./screens/CreateGroup";
 
 function App() {
   return (
@@ -68,6 +69,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Search />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/createGroup"
+              element={
+                <ProtectedRoute>
+                  <CreateGroup />
                 </ProtectedRoute>
               }
             />
