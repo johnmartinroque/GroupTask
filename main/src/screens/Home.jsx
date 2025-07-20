@@ -17,19 +17,19 @@ function Home() {
   };
   return (
     <div id="home">
-  <div className="left-side">
-    <div className="top-left">
-      <Tasks />
-    </div>
-    <div className="bottom-left">
-      <MyGroups />
-    </div>
-  </div>
+      <div className="left-side">
+        <div className="top-left">
+          <Tasks />
+        </div>
+        <div className="bottom-left">
+          <MyGroups />
+        </div>
+      </div>
 
-  <div className="right-side">
-    <Groups />
-  </div>
-</div>
+      <div className="right-side">
+        <Groups />
+      </div>
+    </div>
   );
 }
 

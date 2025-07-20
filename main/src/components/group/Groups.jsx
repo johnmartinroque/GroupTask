@@ -117,13 +117,14 @@ function Groups() {
 
   return (
     <Container>
+      {/* 
       <Row className="mb-4">
         <Col>
           <h1>Groups</h1>
         </Col>
-      </Row>
+      </Row> */}
 
-      <Row>
+      {/*   <Row>
         {groupList.map((group) => (
           <Col key={group.id} md={4} className="mb-3">
             <Card>
@@ -150,7 +151,7 @@ function Groups() {
             </Card>
           </Col>
         ))}
-      </Row>
+      </Row> */}
 
       <Row className="mt-4">
         <Col>

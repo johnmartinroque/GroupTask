@@ -41,12 +41,8 @@ function Header() {
       <nav className="navbar navbar-expand-lg bg-body-tertiary" id="nav">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-          <img 
-        src={HiveTaskLogo} 
-        alt="HiveTask Logo"
-        id="Logo" 
-      />
-        </Link>
+            <img src={HiveTaskLogo} alt="HiveTask Logo" id="Logo" />
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -67,20 +63,29 @@ function Header() {
                 </Link>
               </li>
 
-              
-              <form className="search-form d-flex" role="search" onSubmit={handleSearch}>
-            <button className="btn btn-outline-success bi bi-search" type="submit" id="search-but"></button>
-            <input
-              id="search-form"
-              className={`form-control me-2 search-input ${searchTerm ? "has-value" : ""}`}
-              type="search"
-              placeholder="Search groups..."
-              aria-label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </form>
-          {!user && (
+              <form
+                className="search-form d-flex"
+                role="search"
+                onSubmit={handleSearch}
+              >
+                <button
+                  className="btn btn-outline-success bi bi-search"
+                  type="submit"
+                  id="search-but"
+                ></button>
+                <input
+                  id="search-form"
+                  className={`form-control me-2 search-input ${
+                    searchTerm ? "has-value" : ""
+                  }`}
+                  type="search"
+                  placeholder="Search groups..."
+                  aria-label="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </form>
+              {!user && (
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">
                     Login
@@ -89,31 +94,32 @@ function Header() {
               )}
 
               {user && (
-                <div className="search-form d-flex" id="rightest" >
-                  <h5>
-                    {user.displayName || user.email}</h5>
-                <li className="nav-link active dropdown" id="last-main">
-                  <Link
-                    className="nav-link bi bi-person"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                  </Link>
-                  <ul className="dropdown-menu" id="draop">
-                    <li>
-                      <Link className="dropdown-item" to="/profile">
-                        Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <button className="dropdown-item" onClick={handleLogout}>
-                        Logout
-                      </button>
-                    </li>
-                  </ul>
-                </li>
+                <div className="search-form d-flex" id="rightest">
+                  <h5>{user.displayName || user.email}</h5>
+                  <li className="nav-link active dropdown" id="last-main">
+                    <Link
+                      className="nav-link bi bi-person"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    ></Link>
+                    <ul className="dropdown-menu" id="draop">
+                      <li>
+                        <Link className="dropdown-item" to="/profile">
+                          Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </li>
                 </div>
               )}
             </ul>
@@ -121,28 +127,43 @@ function Header() {
         </div>
       </nav>
       <nav id="sidebar">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link to="/" className="nav-link active bi bi-activity" aria-current="page">
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-link active bi bi-calendar2-week" aria-current="page">
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/" className="nav-link active bi bi-person-add" aria-current="page" >
-              </Link>
-            </li>
-            <li className="nav-item ">
-              <Link to="/" className="nav-link active bi bi-gear" aria-current="page">
-              </Link>
-            </li>
-            <li className="last-item">
-              <Link to="/" className="nav-link active bi bi-plus-lg" aria-current="page">
-              </Link>
-            </li>
-      </ul>
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <li className="nav-item">
+            <Link
+              to="/"
+              className="nav-link active bi bi-activity"
+              aria-current="page"
+            ></Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/"
+              className="nav-link active bi bi-calendar2-week"
+              aria-current="page"
+            ></Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/"
+              className="nav-link active bi bi-person-add"
+              aria-current="page"
+            ></Link>
+          </li>
+          <li className="nav-item ">
+            <Link
+              to="/"
+              className="nav-link active bi bi-gear"
+              aria-current="page"
+            ></Link>
+          </li>
+          <li className="last-item">
+            <Link
+              to="/"
+              className="nav-link active bi bi-plus-lg"
+              aria-current="page"
+            ></Link>
+          </li>
+        </ul>
       </nav>
     </div>
   );

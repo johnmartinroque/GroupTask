@@ -18,59 +18,61 @@ function App() {
     <div className="App">
       <Router>
         <Header />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/landing" element={<LandingPage />} />
-          {/* 🔒 Protected Routes */}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/group/:groupId"
-            element={
-              <ProtectedRoute>
-                <GroupDetailed />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tasks/:taskId"
-            element={
-              <ProtectedRoute>
-                <TaskDetailed />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/task"
-            element={
-              <ProtectedRoute>
-                <TaskDetailed />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/search"
-            element={
-              <ProtectedRoute>
-                <Search />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+        <div className="main-content">
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/landing" element={<LandingPage />} />
+            {/* 🔒 Protected Routes */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/group/:groupId"
+              element={
+                <ProtectedRoute>
+                  <GroupDetailed />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/tasks/:taskId"
+              element={
+                <ProtectedRoute>
+                  <TaskDetailed />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/task"
+              element={
+                <ProtectedRoute>
+                  <TaskDetailed />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <Search />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
       </Router>
     </div>
   );
