@@ -3,20 +3,20 @@ import { db, auth } from "../../firebase";
 import TaskCard from "./TaskCard";
 import { getDocs, collection, query, where } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { Alert, Button, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Alert, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../../src_css/components/task/Tasks.css";
-import { Dropdown } from "react-bootstrap";
 
-function Tasks() {
+function Tasks({ selectedGroupId, setSelectedGroupId }) {
   const [tasksByGroup, setTasksByGroup] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState(null);
-  const [selectedGroupId, setSelectedGroupId] = useState(null);
 
   useEffect(() => {
     const firstGroupId = Object.keys(tasksByGroup)[0];
-    if (firstGroupId) setSelectedGroupId(firstGroupId);
-  }, [tasksByGroup]);
+    if (firstGroupId && !selectedGroupId) {
+      setSelectedGroupId(firstGroupId);
+    }
+  }, [tasksByGroup, selectedGroupId]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -39,7 +39,6 @@ function Tasks() {
 
       const groupsSnapshot = await getDocs(collection(db, "groups"));
 
-      // ✅ Only include groups where the user's role is not "pending"
       const userGroups = groupsSnapshot.docs
         .map((doc) => {
           const data = doc.data();
@@ -51,7 +50,7 @@ function Tasks() {
               }
             : null;
         })
-        .filter(Boolean); // remove nulls
+        .filter(Boolean);
 
       const tasksRef = collection(db, "tasks");
       const groupedTasks = {};
@@ -83,12 +82,6 @@ function Tasks() {
       console.error("Failed to fetch tasks:", err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleNewTaskAdded = () => {
-    if (userId) {
-      fetchTasks(userId);
     }
   };
 

@@ -1,37 +1,52 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Tasks from "../components/task/Tasks";
 import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
-import "../src_css/screens/Home.css";
 import Graph from "../components/group/graph/Graph";
+import "../src_css/screens/Home.css";
 import Invitations from "../components/authentication/Invitations";
 
 function Home() {
-  const [showModal, setShowModal] = useState(false);
   const [selectedGroupId, setSelectedGroupId] = useState(null);
 
-  const show = () => {
-    setShowModal(true);
-    if (showModal) {
-      setShowModal(false);
-    }
-  };
   return (
     <div id="home">
       <div className="left-side">
         <div className="top-left">
-          <Tasks />
+          <Tasks
+            selectedGroupId={selectedGroupId}
+            setSelectedGroupId={setSelectedGroupId}
+          />
         </div>
         <div className="bottom-left">
           <MyGroups />
+          <Groups />
           <Groups />
         </div>
       </div>
 
       <div className="right-side">
-        <Graph />
+        <h1 className="mb-3">Progress Graph</h1>
+        {selectedGroupId ? (
+          <Link
+            to={`/group/${selectedGroupId}`}
+            className="text-decoration-none text-dark"
+          >
+            <div className="graph-container">
+              <Graph selectedGroupId={selectedGroupId} />
+            </div>
+          </Link>
+        ) : (
+          <>
+            <p>Please select a group to view the graph.</p>
+          </>
+        )}
+        <div className="footer">
+          <h1 className="mb-3">TaskHive</h1>
+          <h4>Collaboration by Roque and Manese</h4>
+        </div>
       </div>
       <Invitations />
     </div>

@@ -211,7 +211,7 @@ function GroupDetailed() {
       {isAdmin && <JoinRequests group={group} setGroup={setGroup} /> && (
         <InviteMembers group={group} />
       )}
-      <Graph />
+      <Graph selectedGroupId={group.id} />
     </div>
   );
 }
