@@ -39,13 +39,13 @@ a{
     height: 19rem ;
     overflow-y: auto !important;
     scrollbar-width: none !important;
-    -ms-overflow-style: none !important; 
+    -ms-overflow-style: none !important;
 }
 
 #choose-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* spacing between title and arrow */
+  gap: 0.5rem; 
 }
 
 #choose-group h4 a{
