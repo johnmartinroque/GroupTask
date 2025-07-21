@@ -1,18 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Tasks from "../components/task/Tasks";
 import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
-import "../src_css/screens/Home.css";
 import Graph from "../components/group/graph/Graph";
+import "../src_css/screens/Home.css";
 
 function Home() {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedGroupId, setSelectedGroupId] = useState(null); // 🔑 shared state
-
-  const show = () => {
-    setShowModal(!showModal);
-  };
+  const [selectedGroupId, setSelectedGroupId] = useState(null);
 
   return (
     <div id="home">
@@ -30,7 +26,22 @@ function Home() {
       </div>
 
       <div className="right-side">
-        <Graph selectedGroupId={selectedGroupId} />
+        <h1 className="mb-3">Progress Graph</h1>
+        {selectedGroupId ? (
+          <Link
+            to={`/group/${selectedGroupId}`}
+            className="text-decoration-none text-dark"
+          >
+            <div className="graph-container">
+              <Graph selectedGroupId={selectedGroupId} />
+            </div>
+          </Link>
+        ) : (
+          <>
+            <h1 className="mb-3">Progress Graph</h1>
+            <p>Please select a group to view the graph.</p>
+          </>
+        )}
       </div>
     </div>
   );
