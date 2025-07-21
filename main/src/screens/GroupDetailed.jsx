@@ -209,7 +209,7 @@ function GroupDetailed() {
       <FinishedTasks />
       <Chat groupId={group.id} groupMembers={group.members} />
       {isAdmin && <JoinRequests group={group} setGroup={setGroup} />}
-      <Graph />
+      <Graph selectedGroupId={group.id} />
     </div>
   );
 }

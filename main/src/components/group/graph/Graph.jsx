@@ -8,30 +8,29 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useParams } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { db } from "../../../firebase";
 
-function Graph() {
-  const { groupId } = useParams();
+function Graph({ selectedGroupId }) {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTopFinishers = async () => {
+      if (!selectedGroupId) return;
+
+      setLoading(true);
       try {
         const q = query(
           collection(db, "tasks"),
-          where("groupId", "==", groupId),
+          where("groupId", "==", selectedGroupId),
           where("progress", "==", "Finished")
         );
 
         const querySnapshot = await getDocs(q);
         const tasks = querySnapshot.docs.map((doc) => doc.data());
 
-        // Count how many times each user appears in `finishedBy`
         const userCounts = {};
         tasks.forEach((task) => {
           const user = task.finishedBy;
@@ -40,11 +39,10 @@ function Graph() {
           }
         });
 
-        // Convert counts to an array and sort by value descending
         const sorted = Object.entries(userCounts)
           .map(([name, value]) => ({ name, value }))
-          .sort((a, b) => a.value - b.value) // smallest to largest
-          .slice(-3); // last 3 of the sorted list (if more than 3)
+          .sort((a, b) => a.value - b.value)
+          .slice(-3); // show top 3
 
         setChartData(sorted);
       } catch (err) {
@@ -55,15 +53,16 @@ function Graph() {
     };
 
     fetchTopFinishers();
-  }, [groupId]);
+  }, [selectedGroupId]);
 
+  if (!selectedGroupId) return <p>Select a group to see the chart.</p>;
   if (loading) return <Spinner animation="border" />;
   if (chartData.length === 0) return <p>No finished tasks yet to show.</p>;
 
   return (
     <div>
       <h5 className="mb-3">Top 3</h5>
-      <ResponsiveContainer width="50%" height={300}>
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />

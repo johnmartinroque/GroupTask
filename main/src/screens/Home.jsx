@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { Button } from "react-bootstrap";
 import Tasks from "../components/task/Tasks";
 import Groups from "../components/group/Groups";
@@ -9,28 +8,29 @@ import Graph from "../components/group/graph/Graph";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
-  const [selectedGroupId, setSelectedGroupId] = useState(null);
+  const [selectedGroupId, setSelectedGroupId] = useState(null); // 🔑 shared state
 
   const show = () => {
-    setShowModal(true);
-    if (showModal) {
-      setShowModal(false);
-    }
+    setShowModal(!showModal);
   };
+
   return (
     <div id="home">
       <div className="left-side">
         <div className="top-left">
-          <Tasks />
+          <Tasks
+            selectedGroupId={selectedGroupId}
+            setSelectedGroupId={setSelectedGroupId}
+          />
         </div>
         <div className="bottom-left">
           <MyGroups />
-        <Groups />
+          <Groups />
         </div>
       </div>
 
       <div className="right-side">
-        <Graph />
+        <Graph selectedGroupId={selectedGroupId} />
       </div>
     </div>
   );
