@@ -71,7 +71,7 @@ body {
 .graph-container{
   background-color: #1f1f1f;
   border-radius: 1rem;
-  min-height: 50%;
+  min-height: 55%;
   transition: 0.2s ease-in-out;
 }
 
@@ -82,4 +82,22 @@ body {
 
 .graph-container:active{
   transform: scale(1);
+}
+
+.footer{
+  position: fixed;
+  bottom: 2rem;
+  right: 5rem;
+}
+
+.footer h1{
+  text-align: right;
+  color: #0f0f0f;
+  font-weight: 600;
+}
+
+.footer h4{
+  text-align: right;
+  color: #0f0f0f;
+  margin-top: -3rem;
 }

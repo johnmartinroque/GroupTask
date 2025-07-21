@@ -38,10 +38,13 @@ function Home() {
           </Link>
         ) : (
           <>
-            <h1 className="mb-3">Progress Graph</h1>
             <p>Please select a group to view the graph.</p>
           </>
         )}
+        <div className="footer">
+        <h1 className="mb-3">TaskHive</h1>
+        <h4>Collaboration by Roque and Manese</h4>
+        </div>
       </div>
     </div>
   );
