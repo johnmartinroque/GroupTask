@@ -208,7 +208,9 @@ function GroupDetailed() {
       <Scores />
       <FinishedTasks />
       <Chat groupId={group.id} groupMembers={group.members} />
-      {isAdmin && <JoinRequests group={group} setGroup={setGroup} />}
+      {isAdmin && <JoinRequests group={group} setGroup={setGroup} /> && (
+        <InviteMembers group={group} />
+      )}
       <Graph />
     </div>
   );

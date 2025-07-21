@@ -12,7 +12,7 @@ import TaskDetailed from "./screens/TaskDetailed";
 import ProtectedRoute from "./components/authentication/ProtectedRoute";
 import LandingPage from "./components/authentication/LandingPage";
 import Search from "./components/Search";
-import CreateGroup from "./screens/CreateGroup";
+import CreateScreen from "./screens/CreateScreen";
 
 function App() {
   return (
@@ -76,7 +76,7 @@ function App() {
               path="/createGroup"
               element={
                 <ProtectedRoute>
-                  <CreateGroup />
+                  <CreateScreen />
                 </ProtectedRoute>
               }
             />

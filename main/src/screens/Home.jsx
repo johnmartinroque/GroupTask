@@ -6,6 +6,7 @@ import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
 import "../src_css/screens/Home.css";
 import Graph from "../components/group/graph/Graph";
+import Invitations from "../components/authentication/Invitations";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -25,13 +26,14 @@ function Home() {
         </div>
         <div className="bottom-left">
           <MyGroups />
-        <Groups />
+          <Groups />
         </div>
       </div>
 
       <div className="right-side">
         <Graph />
       </div>
+      <Invitations />
     </div>
   );
 }
