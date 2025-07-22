@@ -61,7 +61,7 @@ function Graph({ selectedGroupId }) {
 
   return (
     <div style={{paddingTop:"1rem"}}>
-      <h2 className="mb-3">Top 3</h2>
+      <h2 style={{color: "#f6f6f6"}} className="mb-3">Top 3</h2>
       <ResponsiveContainer width="100%" height={300} style={{paddingRight:"3rem", marginTop:"2rem", height:"100%"}}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />

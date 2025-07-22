@@ -5,15 +5,14 @@
   text-align: center;
   border-radius: 1.2rem !important;
   background-color: #1f1f1f !important;
-  transition: 0.2s ease-in-out ;
   min-height: 19.5rem;
 }
 
-.task-carda:hover{
+.task-link:hover{
     transform: scale(1.02);
 }
 
-.task-carda:active{
+.task-link:active{
     transform: scale(1);
 }
 
@@ -23,6 +22,7 @@
 }
 
 .task-link {
+  transition: 0.2s ease-in-out ;
   text-decoration: none;
   color: #f6f6f6;
   display: -webkit-box;

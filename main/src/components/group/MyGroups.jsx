@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import "../../src_css/components/group/MyGroups.css";
 
 function MyGroups() {
   const [myGroups, setMyGroups] = useState([]);
@@ -36,22 +37,26 @@ function MyGroups() {
   }, [userId]);
 
   return (
-    <Container>
-      <h2 className="mt-4">My Groups</h2>
+    <Container id="my-groups">
+      <h1 className="mt-4">My Groups</h1>
       <Row>
         {myGroups.length > 0 ? (
           myGroups.map((group) => (
-            <Col md={4} key={group.id} className="mb-3">
-              <Card>
-                <Card.Body>
-                  <Card.Title>{group.groupName}</Card.Title>
-                  <Link to={`/group/${group.id}`}>View Group</Link>
-                </Card.Body>
-              </Card>
+            <Col md={4} key={group.id}>
+              <Link to={`/group/${group.id}`} className="group-link">
+                <Card className="group-card">
+                  <Card.Body>
+                    <h5>{group.groupName}</h5>
+                    <p className="group-members">
+                      Members: {group.members?.length || 0}
+                    </p>
+                  </Card.Body>
+                </Card>
+              </Link>
             </Col>
           ))
         ) : (
-          <p>You are not a member of any groups.</p>
+          <p className="mt-4">You are not a member of any groups.</p>
         )}
       </Row>
     </Container>
