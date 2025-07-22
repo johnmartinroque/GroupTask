@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link, useParams } from "react-router-dom";
-import { Card, Spinner } from "react-bootstrap";
+import { Card, Container, Spinner } from "react-bootstrap";
 
 function FinishedTasks() {
   const { groupId } = useParams();

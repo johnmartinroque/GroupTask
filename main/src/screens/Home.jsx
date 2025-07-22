@@ -23,7 +23,6 @@ function Home() {
         <div className="bottom-left">
           <MyGroups />
           <Groups />
-          <Groups />
         </div>
       </div>
 
