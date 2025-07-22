@@ -19,7 +19,7 @@ function TaskCard(props) {
       
         <p className="task-date">Posted on: {datePosted}</p>
 
-        <p className="task-progress">Progress: {progress}</p>
+        <p className="task-progress">{progress}</p>
       </Card.Body>
     </Card>
     </Link>

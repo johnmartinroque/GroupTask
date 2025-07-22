@@ -42,12 +42,12 @@ function Home() {
             <p>Please select a group to view the graph.</p>
           </>
         )}
+      <Invitations />
         <div className="footer">
           <h1 className="mb-3">TaskHive</h1>
           <h4>Collaboration by Roque and Manese</h4>
         </div>
       </div>
-      <Invitations />
     </div>
   );
 }

@@ -5,7 +5,7 @@ body {
 #home{
   padding-left: 7.1rem;
   display: flex;
-  height: 90vh;   
+  height: 100%;   
 }
 
 .left-side {
@@ -84,10 +84,9 @@ body {
   transform: scale(1);
 }
 
-.footer{
-  position: fixed;
-  bottom: 2rem;
-  right: 5rem;
+.footer{  
+  position: sticky;
+  margin-top: 10rem;
 }
 
 .footer h1{
