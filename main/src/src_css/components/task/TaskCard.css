@@ -1,12 +1,12 @@
 .task-carda {
   margin: 1.25rem auto;
-  padding: 1rem;
+  padding: 1rem 1rem 0rem 1rem;
   max-width: 31.25rem;
   text-align: center;
   border-radius: 1.2rem !important;
   background-color: #1f1f1f !important;
   transition: 0.2s ease-in-out ;
-  min-height: 17rem;
+  min-height: 19.5rem;
 }
 
 .task-carda:hover{
@@ -25,6 +25,12 @@
 .task-link {
   text-decoration: none;
   color: #f6f6f6;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .task-group {
@@ -39,10 +45,23 @@
   margin-bottom: 0.5rem;
 }
 
+.task-dead {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: #666;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  min-height: 2.75em;
+}
+
 .task-progress {
   font-weight: 500;
   color: #d8d800;
-  margin-bottom: 0.75rem;
+  margin-top: 2rem;
 }
 
 .task-desc {
@@ -52,4 +71,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+  min-height: 2.75em;
+  margin-bottom: 1rem;
 }

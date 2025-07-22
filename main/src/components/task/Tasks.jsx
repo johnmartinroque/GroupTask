@@ -143,6 +143,7 @@ function Tasks({ selectedGroupId, setSelectedGroupId }) {
                       description={task.description}
                       datePosted={task.datePosted}
                       progress={task.progress}
+                      deadline={task.deadline}
                       groupName={tasksByGroup[selectedGroupId].groupName}
                       groupId={selectedGroupId}
                     />

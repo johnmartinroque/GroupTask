@@ -5,26 +5,27 @@ body {
 #home{
   padding-left: 7.1rem;
   display: flex;
-  height: 90vh;   
+  height: 100%;   
 }
 
 .left-side {
   display: flex;
   flex-direction: column;
-  width: 42%;
+  width: 47%;
   box-sizing: border-box;
   /* background-color: bisque; */
   margin: 1rem;
 }
 
-.top-left,
-.bottom-left {
-  /* overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;  */
-  height: 50%; 
+.top-left{
+  height: 55%; 
   box-sizing: border-box;
-  border-radius: 1rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: .5rem;
+}
+.bottom-left {
+  height: 40%; 
+  box-sizing: border-box;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
   padding: .5rem;
 }
@@ -84,10 +85,9 @@ body {
   transform: scale(1);
 }
 
-.footer{
-  position: fixed;
-  bottom: 2rem;
-  right: 5rem;
+.footer{  
+  position: sticky;
+  margin-top: 10rem;
 }
 
 .footer h1{

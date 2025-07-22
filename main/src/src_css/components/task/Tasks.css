@@ -36,7 +36,7 @@ a{
 }
 
 #task-card{
-    height: 19rem ;
+    height: 21rem ;
     overflow-y: auto !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../../src_css/components/task/TaskCard.css";
 
 function TaskCard(props) {
-  const { id, name, description, datePosted, progress, groupName } = props;
+  const { id, name, description, datePosted, progress, deadline, groupName } = props;
 
   return (
     <Link to={`/tasks/${id}`} className="task-link">
@@ -16,10 +16,9 @@ function TaskCard(props) {
           </Link>
         </h5>
         <p className="task-desc">{description}</p>
-      
         <p className="task-date">Posted on: {datePosted}</p>
-
-        <p className="task-progress">Progress: {progress}</p>
+        {deadline ? <p className="task-dead">Deadline: {deadline}</p> : <> <p className="task-dead">No deadline</p></>}
+        <p className="task-progress">{progress}</p>
       </Card.Body>
     </Card>
     </Link>

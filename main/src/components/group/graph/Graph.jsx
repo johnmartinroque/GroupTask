@@ -60,9 +60,9 @@ function Graph({ selectedGroupId }) {
   if (chartData.length === 0) return <p>No finished tasks yet to show.</p>;
 
   return (
-    <div>
-      <h5 className="mb-3">Top 3</h5>
-      <ResponsiveContainer width="100%" height={300}>
+    <div style={{paddingTop:"1rem"}}>
+      <h2 className="mb-3">Top 3</h2>
+      <ResponsiveContainer width="100%" height={300} style={{paddingRight:"3rem", marginTop:"2rem", height:"100%"}}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
