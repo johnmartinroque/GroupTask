@@ -48,29 +48,43 @@ function ChangePassword() {
 
   return (
     <div className="d-flex justify-content-center mt-5">
-      <div className="bg-white rounded p-4 shadow" style={{ width: "40rem" }}>
+      <div className="rounded p-4 shadow" style={{ width: "40rem", backgroundColor:"#393939" }}>
         <Row>
           <Col>
-            <h1>Change Password</h1>
+            <h1 style={{fontWeight: "600"}}>Change Password</h1>
             <div className="mb-3">
               <label className="form-label">Current Password</label>
               <input
+                style={{
+                borderRadius: "10rem",
+                border: "none",
+                padding: "1rem",
+                backgroundColor: "#1f1f1f"
+                }}
                 type="password"
                 className="form-control"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Change Password"
               />
             </div>
             <div className="mb-3">
               <label className="form-label">New Password</label>
               <input
+                style={{
+                borderRadius: "10rem",
+                border: "none",
+                padding: "1rem",
+                backgroundColor: "#1f1f1f"
+                }}
                 type="password"
                 className="form-control"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="New Password"
               />
             </div>
-            <Button onClick={handleChangePassword}>Change Password</Button>
+            <Button style={{padding:".7rem", marginTop:'1rem'}} onClick={handleChangePassword}>Change Password</Button>
             {message && <p className="mt-2 text-danger">{message}</p>}
           </Col>
         </Row>

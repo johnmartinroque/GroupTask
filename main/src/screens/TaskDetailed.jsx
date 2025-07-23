@@ -14,7 +14,6 @@ function TaskDetailed() {
   const [progress, setProgress] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const auth = getAuth();
   const currentUser = auth.currentUser;
   const fetchTask = async () => {
@@ -78,7 +77,7 @@ function TaskDetailed() {
   if (!task) {
     return (
       <Container>
-        <h2>Task not found.</h2>
+        <h1 style={{color:"#f6f6f6", marginTop:"10vh"}}>Task not found.</h1>
       </Container>
     );
   }
@@ -102,16 +101,16 @@ function TaskDetailed() {
       : "N/A";
 
   return (
-    <Container className="my-4">
-      <Card>
+    <Container className="my-5 d-flex justify-content-center align-items-center">
+      <Card style={{textAlign: "center", borderRadius: "1.2rem", backgroundColor: "#1f1f1f", padding:"1.5rem", width:"70vh"}}>
         <Card.Body>
-          <Card.Title>{task.name}</Card.Title>
+          <h1 style={{marginBottom: "1rem", color: "#f6f6f6"}}>{task.name}</h1>
           <Card.Subtitle className="mb-2 text-muted">
             Posted on: {formattedDate}
           </Card.Subtitle>
           <Card.Text>{task.description}</Card.Text>
           <Card.Text>{task.progress}</Card.Text>
-          <select
+          <select 
             className="form-select"
             value={progress}
             onChange={(e) => {
@@ -123,12 +122,12 @@ function TaskDetailed() {
             <option value="In progress">In progress</option>
             <option value="Finished">Finished</option>
           </select>
-          <Button variant="success" className="me-2" onClick={updateTask}>
+          <Button style={{borderRadius: "100rem", padding:"1rem"}} variant="success" className="me-2" onClick={updateTask}>
             Update Status
           </Button>
           {isAdmin && (
             <>
-              <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+              <Button style={{borderRadius: "100rem", padding:"1rem"}} variant="danger" onClick={() => setShowDeleteModal(true)}>
                 Delete Task
               </Button>
               <DeleteTaskModal
@@ -140,10 +139,8 @@ function TaskDetailed() {
             </>
           )}
         </Card.Body>
+        <Button onclick={`/group/${task.groupId}`} variant="primary">Back</Button>
       </Card>
-      <Link to={`/group/${task.groupId}`}>
-        <Button variant="primary">Back</Button>
-      </Link>
     </Container>
   );
 }

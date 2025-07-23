@@ -5,7 +5,6 @@ import ChangePassword from "../components/authentication/ChangePassword";
 function Profile() {
   return (
     <div>
-      Profile
       <ChangePassword />
     </div>
   );

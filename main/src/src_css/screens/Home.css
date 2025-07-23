@@ -3,7 +3,6 @@ body {
 }
 
 #home{
-  padding-left: 7.1rem;
   display: flex;
   height: 100%;   
 }
@@ -85,12 +84,12 @@ body {
 
 .footer h1{
   text-align: right;
-  color: #0f0f0f;
+  color: #0f0f0f !important;
   font-weight: 600;
 }
 
 .footer h4{
   text-align: right;
-  color: #0f0f0f;
+  color: #0f0f0f !important;
   margin-top: -3rem;
 }
