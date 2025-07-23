@@ -92,7 +92,7 @@ function AddTask(props) {
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-95 bg-light">
-      <Container className="text-center">
+      <Container className="text-center ">
         {isLoading && (
           <div role="status" className="mb-3">
             <Spinner />
