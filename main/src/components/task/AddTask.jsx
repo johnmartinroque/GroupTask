@@ -91,19 +91,12 @@ function AddTask(props) {
   }, []);
 
   return (
-    <div
-      className="d-flex align-items-center justify-content-center bg-light"
-      style={{ minHeight: "20vh", minWidth: "5vh" }}
-    >
-      <Container>
+    <div className="d-flex justify-content-center align-items-center vh-95 bg-light">
+      <Container className="text-center">
         {isLoading && (
-          <div
-            className="p-5 rounded d-flex justify-content-center mb-3"
-            role="status"
-          >
-            <span className="visually-hidden">
-              <Spinner />
-            </span>
+          <div role="status" className="mb-3">
+            <Spinner />
+            <span className="visually-hidden">Loading...</span>
           </div>
         )}
         {!user ? (
@@ -112,26 +105,24 @@ function AddTask(props) {
           <>
             <input
               type="text"
-              className="form-control mb-2"
               placeholder="Task Name"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
+              className="form-control mb-3"
             />
             <textarea
-              type="text"
               placeholder="Task Description"
-              className="form-control mb-2"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               rows={4}
-              cols={80}
+              className="form-control mb-3"
             />
-            <label>Optional Deadline</label>
+            <label className="mb-1">Optional Deadline</label>
             <input
               type="datetime-local"
-              className="form-control mb-3"
               value={newDeadline}
               onChange={(e) => setNewDeadline(e.target.value)}
+              className="form-control mb-3"
             />
             <Button onClick={addTask}>SUBMIT</Button>
           </>
