@@ -46,7 +46,7 @@ function MyGroups() {
               <Link to={`/group/${group.id}`} className="group-link">
                 <Card className="group-card">
                   <Card.Body>
-                    <h5>{group.groupName}</h5>
+                    <h3>{group.groupName}</h3>
                     <p className="group-members">
                       Members: {group.members?.length || 0}
                     </p>

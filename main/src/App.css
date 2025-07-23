@@ -14,5 +14,6 @@ h4 {
 }
 
 .main-content {
-  padding-top: 5.625rem; /* Matches the header height */
+  padding-top: 5.625rem;
+  padding-left: 7.1rem;
 }
