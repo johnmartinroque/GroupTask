@@ -40,15 +40,17 @@ function FinishedTasks() {
 
   return (
     <div>
-      <h4 className="mt-4">Finished Tasks</h4>
+      <h4 className="mt-4 text-center">Finished Tasks</h4>
       {finishedTasks.map((task) => (
-        <Card key={task.id} className="mb-2 p-2">
-          <strong>
-            <Link to={`/tasks/${task.id}`}>{task.name}</Link>
-          </strong>
-          <div>Progress: {task.progress}</div>
-          {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
-        </Card>
+        <div key={task.id} className="d-flex justify-content-center mb-2">
+          <Card className="p-2" style={{ width: "40rem" }}>
+            <strong>
+              <Link to={`/tasks/${task.id}`}>{task.name}</Link>
+            </strong>
+            <div>Progress: {task.progress}</div>
+            {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
+          </Card>
+        </div>
       ))}
     </div>
   );
