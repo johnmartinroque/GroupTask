@@ -41,17 +41,27 @@ function FinishedTasks() {
   return (
     <div>
       <h4 className="mt-4 text-center">Finished Tasks</h4>
-      {finishedTasks.map((task) => (
-        <div key={task.id} className="d-flex justify-content-center mb-2">
-          <Card className="p-2" style={{ width: "40rem" }}>
-            <strong>
-              <Link to={`/tasks/${task.id}`}>{task.name}</Link>
-            </strong>
-            <div>Progress: {task.progress}</div>
-            {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
-          </Card>
+      <div className="container">
+        <div className="row">
+          {finishedTasks.map((task) => (
+            <div
+              key={task.id}
+              className="col-md-4 mb-4 d-flex justify-content-center"
+            >
+              <Card
+                className="p-3"
+                style={{ width: "100%", maxWidth: "22rem" }}
+              >
+                <strong>
+                  <Link to={`/tasks/${task.id}`}>{task.name}</Link>
+                </strong>
+                <div>Progress: {task.progress}</div>
+                {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
+              </Card>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
