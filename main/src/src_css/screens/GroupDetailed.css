@@ -1,5 +1,16 @@
-.group-detailed-wrapper {
-  padding-left: 7.1rem; /* Sidebar width */
-  padding-top: 2rem; /* Optional spacing from header */
-  padding-right: 2rem; /* Optional right padding */
+.group-body {
+  padding: 2rem;
+}
+
+h1 {
+  font-weight: 600;
+  margin-bottom: 2.75rem !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #f6f6f6 !important;
 }
