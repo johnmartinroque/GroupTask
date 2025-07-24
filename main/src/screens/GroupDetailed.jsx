@@ -15,7 +15,7 @@ import JoinRequests from "../components/group/JoinRequests";
 import Chat from "../components/group/chat/Chat";
 import Graph from "../components/group/graph/Graph";
 import InviteMembers from "../components/group/InviteMembers";
-
+import "../src_css/screens/GroupDetailed.css";
 function GroupDetailed() {
   const { groupId } = useParams();
   const [group, setGroup] = useState(null);
@@ -165,7 +165,7 @@ function GroupDetailed() {
   if (!group) return <p>Group not found.</p>;
 
   return (
-    <div>
+    <div className="group-detailed-wrapper">
       <h2>{group.groupName}</h2>
       <GroupMembers
         members={group.members}
