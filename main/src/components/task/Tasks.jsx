@@ -163,7 +163,7 @@ function Tasks({ selectedGroupId, setSelectedGroupId, setSelectedGroupName }) {
           </Row>
         </div>
       ) : (
-        <Alert variant="warning">No tasks</Alert>
+        <Alert style={{backgroundColor:"transparent", border:"0", color:"#495057"}}>No tasks</Alert>
       )}
     </Container>
   );

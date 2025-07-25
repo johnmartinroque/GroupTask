@@ -166,7 +166,7 @@ function GroupDetailed() {
 
   return (
     <div className="group-detailed-wrapper">
-      <h2>{group.groupName}</h2>
+      <h1>{group.groupName}</h1>
       <GroupMembers
         members={group.members}
         isAdmin={isAdmin}
@@ -177,8 +177,20 @@ function GroupDetailed() {
         <Col>
           <AddTask groupId={group.id} groupName={group.groupName} />
         </Col>
+        <Col>
+            <Chat groupId={group.id} groupMembers={group.members} />
+              {isAdmin && (
+              <>
+                <JoinRequests group={group} setGroup={setGroup} />
+                <InviteMembers group={group} />
+              </>
+              )}
+        </Col>
       </Row>
-      <GroupTasks groupId={group.id} />
+
+      <Row className="mt-5">
+        <Col>
+            <GroupTasks groupId={group.id} />
       {isAuthorized && (
         <Button
           variant="warning"
@@ -192,6 +204,11 @@ function GroupDetailed() {
           Leave Group
         </Button>
       )}
+        </Col>
+        <Col>
+        <FinishedTasks />
+        </Col>
+      </Row>
       <LeaveGroup
         show={showLeaveModal}
         onClose={() => setShowLeaveModal(false)}
@@ -206,14 +223,6 @@ function GroupDetailed() {
         name={memberToRemove?.name || "this member"}
       />
       <Scores />
-      <FinishedTasks />
-      <Chat groupId={group.id} groupMembers={group.members} />
-      {isAdmin && (
-        <>
-          <JoinRequests group={group} setGroup={setGroup} />
-          <InviteMembers group={group} />
-        </>
-      )}
 
       <Graph selectedGroupId={group.id} />
     </div>

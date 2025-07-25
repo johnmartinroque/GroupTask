@@ -1,32 +1,6 @@
-/* h1{
-    color: #f6f6f6 !important;
-    text-transform: uppercase;
-    font-family: 'Roboto Condensed', sans-serif;
-    -webkit-text-stroke: 0.3px #f6f6f6;
-}
-
-h4{
-    color: #f6f6f6 !important;
-    text-transform: uppercase;
-    font-family: 'Roboto Condensed', sans-serif;
-    -webkit-text-stroke: 0.3px #f6f6f6;
-}
-
-a{
-    text-decoration: none !important;
-    color: #f6f6f6 !important;
-}
-
-.g-4 {
-    background-color: red;
-    padding: 1rem;
-    display: flex;
-    gap: 1.5rem;
-} */
-
 #group-tasks{
-    margin: none !important;
-    padding: none !important;
+  margin: none !important;
+  padding: none !important;
 }
 
 #group-tasks h1{
@@ -36,10 +10,10 @@ a{
 }
 
 #task-card{
-    height: 21rem ;
-    overflow-y: auto !important;
-    scrollbar-width: none !important;
-    -ms-overflow-style: none !important;
+  height: 21rem ;
+  overflow-y: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
 #choose-group {

@@ -1,5 +1,5 @@
-.group-body {
-  padding: 2rem;
+.group-detailed-wrapper{
+  padding: 2rem 5rem;
 }
 
 h1 {
@@ -14,3 +14,4 @@ h4,
 h5 {
   color: #f6f6f6 !important;
 }
+

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Link, useParams } from "react-router-dom";
-import { Card, Container, Spinner } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
+import "../../src_css/components/task/TaskCard.css";
 
 function FinishedTasks() {
   const { groupId } = useParams();
@@ -39,28 +40,20 @@ function FinishedTasks() {
   if (finishedTasks.length === 0) return <p>No finished tasks yet.</p>;
 
   return (
-    <div>
-      <h4 className="mt-4 text-center">Finished Tasks</h4>
-      <div className="container">
-        <div className="row">
-          {finishedTasks.map((task) => (
-            <div
-              key={task.id}
-              className="col-md-4 mb-4 d-flex justify-content-center"
-            >
-              <Card
-                className="p-3"
-                style={{ width: "100%", maxWidth: "22rem" }}
-              >
-                <strong>
-                  <Link to={`/tasks/${task.id}`}>{task.name}</Link>
-                </strong>
-                <div>Progress: {task.progress}</div>
-                {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
-              </Card>
-            </div>
-          ))}
-        </div>
+    <div className="text-end container">
+      <h1 className="text-end mb-4">Finished Tasks</h1>
+      <div className="row justify-content-end" style={{marginTop:"3.5rem"}}>
+        {finishedTasks.map((task) => (
+          <Link to={`/tasks/${task.id}`} key={task.id} className="col-md-6 mb-4 d-flex justify-content-end task-link">
+            <Card className="p-3 w-100" style={{ maxWidth: "22rem", backgroundColor: "#1f1f1f", boxShadow: "inset 0px -2px 6px -2px rgba(0, 0, 0, 0.26)", }}>
+              <h4 style = {{overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                {task.name}
+              </h4>
+              <div>Progress: {task.progress}</div>
+              {task.finishedBy && <div>Finished by: {task.finishedBy}</div>}
+            </Card>
+          </Link>
+        ))}
       </div>
     </div>
   );
