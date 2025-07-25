@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
 import { Button, ListGroup } from "react-bootstrap";
 import { db } from "../../firebase";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +17,6 @@ function Invitations() {
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -31,10 +29,10 @@ function Invitations() {
         const q = query(invitesRef, where("inviteeId", "==", user.uid));
         const snapshot = await getDocs(q);
 
-        const results = [];
-        snapshot.forEach((docSnap) => {
-          results.push({ id: docSnap.id, ...docSnap.data() });
-        });
+        const results = snapshot.docs.map((docSnap) => ({
+          id: docSnap.id,
+          ...docSnap.data(),
+        }));
 
         setInvitations(results);
       } catch (err) {
@@ -47,16 +45,21 @@ function Invitations() {
     fetchInvitations();
   }, [user]);
 
+  const removeInvitation = async (inviteId) => {
+    await deleteDoc(doc(db, "invitations", inviteId));
+    setInvitations((prev) => prev.filter((i) => i.id !== inviteId));
+  };
+
   const acceptInvitation = async (invite) => {
     if (!user) return;
 
     const groupRef = doc(db, "groups", invite.groupId);
 
     try {
-      // Add user to group members as "member"
       const groupSnap = await getDocs(
         query(collection(db, "groups"), where("__name__", "==", invite.groupId))
       );
+
       if (!groupSnap.empty) {
         const groupData = groupSnap.docs[0].data();
         const currentMembers = groupData.members || [];
@@ -75,11 +78,7 @@ function Invitations() {
         }
       }
 
-      // Delete the invitation
-      await deleteDoc(doc(db, "invitations", invite.id));
-
-      // Remove from UI
-      setInvitations((prev) => prev.filter((i) => i.id !== invite.id));
+      await removeInvitation(invite.id); // delete after accepting
       navigate(`/group/${invite.groupId}`);
     } catch (err) {
       console.error("Failed to accept invitation:", err);
@@ -88,8 +87,7 @@ function Invitations() {
 
   const declineInvitation = async (inviteId) => {
     try {
-      await deleteDoc(doc(db, "invitations", inviteId));
-      setInvitations((prev) => prev.filter((i) => i.id !== inviteId));
+      await removeInvitation(inviteId); // delete after declining
     } catch (err) {
       console.error("Failed to decline invitation:", err);
     }
