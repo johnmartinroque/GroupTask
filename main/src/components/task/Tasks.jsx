@@ -6,7 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Alert, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../../src_css/components/task/Tasks.css";
 
-function Tasks({ selectedGroupId, setSelectedGroupId }) {
+function Tasks({ selectedGroupId, setSelectedGroupId, setSelectedGroupName }) {
   const [tasksByGroup, setTasksByGroup] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState(null);
@@ -15,6 +15,8 @@ function Tasks({ selectedGroupId, setSelectedGroupId }) {
     const firstGroupId = Object.keys(tasksByGroup)[0];
     if (firstGroupId && !selectedGroupId) {
       setSelectedGroupId(firstGroupId);
+      const groupName = tasksByGroup[firstGroupId]?.groupName;
+      if (groupName) setSelectedGroupName(groupName);
     }
   }, [tasksByGroup, selectedGroupId]);
 
@@ -110,7 +112,10 @@ function Tasks({ selectedGroupId, setSelectedGroupId }) {
                 <li key={groupId}>
                   <button
                     className="dropdown-item"
-                    onClick={() => setSelectedGroupId(groupId)}
+                    onClick={() => {
+                      setSelectedGroupId(groupId);
+                      setSelectedGroupName(groupData.groupName);
+                    }}
                   >
                     {groupData.groupName}
                   </button>

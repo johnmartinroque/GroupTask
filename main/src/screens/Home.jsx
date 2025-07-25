@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import Tasks from "../components/task/Tasks";
 import Groups from "../components/group/Groups";
 import MyGroups from "../components/group/MyGroups";
@@ -10,6 +10,7 @@ import Invitations from "../components/authentication/Invitations";
 
 function Home() {
   const [selectedGroupId, setSelectedGroupId] = useState(null);
+  const [selectedGroupName, setSelectedGroupName] = useState("");
 
   return (
     <div id="home">
@@ -18,6 +19,7 @@ function Home() {
           <Tasks
             selectedGroupId={selectedGroupId}
             setSelectedGroupId={setSelectedGroupId}
+            setSelectedGroupName={setSelectedGroupName}
           />
         </div>
         <div className="bottom-left">
@@ -26,7 +28,11 @@ function Home() {
       </div>
 
       <div className="right-side">
-        <h1 className="mb-3">Progress Graph</h1>
+        {selectedGroupName ? (
+          <h1 className="mb-3">Top 3 in Group {selectedGroupName}</h1>
+        ) : (
+          <Spinner animation="border" />
+        )}
         {selectedGroupId ? (
           <Link
             to={`/group/${selectedGroupId}`}
