@@ -137,7 +137,7 @@ function Header() {
           </li>
           <li className="nav-item">
             <Link
-              to="/"
+              to="/calendar"
               className="nav-link active bi bi-calendar2-week"
               aria-current="page"
             ></Link>

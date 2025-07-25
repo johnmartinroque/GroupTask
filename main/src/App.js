@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/authentication/ProtectedRoute";
 import LandingPage from "./components/authentication/LandingPage";
 import Search from "./components/Search";
 import CreateScreen from "./screens/CreateScreen";
+import CalendarScreen from "./screens/CalendarScreen";
 
 function App() {
   return (
@@ -69,6 +70,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Search />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <ProtectedRoute>
+                  <CalendarScreen />
                 </ProtectedRoute>
               }
             />
