@@ -63,28 +63,30 @@ function Header() {
                 </Link>
               </li>
 
-              <form
-                className="search-form d-flex"
-                role="search"
-                onSubmit={handleSearch}
-              >
-                <button
-                  className="btn btn-outline-success bi bi-search"
-                  type="submit"
-                  id="search-but"
-                ></button>
-                <input
-                  id="search-form"
-                  className={`form-control me-2 search-input ${
-                    searchTerm ? "has-value" : ""
-                  }`}
-                  type="search"
-                  placeholder="Search groups..."
-                  aria-label="Search"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </form>
+              {user && (
+                <form
+                  className="search-form d-flex"
+                  role="search"
+                  onSubmit={handleSearch}
+                >
+                  <button
+                    className="btn btn-outline-success bi bi-search"
+                    type="submit"
+                    id="search-but"
+                  ></button>
+                  <input
+                    id="search-form"
+                    className={`form-control me-2 search-input ${
+                      searchTerm ? "has-value" : ""
+                    }`}
+                    type="search"
+                    placeholder="Search groups..."
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </form>
+              )}
               {!user && (
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">
